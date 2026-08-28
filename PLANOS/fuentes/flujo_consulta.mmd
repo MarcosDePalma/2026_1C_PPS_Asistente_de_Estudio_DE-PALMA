@@ -1,0 +1,40 @@
+---
+title: StudIA - Flujo de una consulta
+---
+flowchart TD
+    Q["Pregunta del estudiante<br/>materia seleccionada + modo"] --> EXP{"¿Repregunta<br/>sin términos propios?"}
+    EXP -->|sí| CTX["Expandir la consulta con<br/>el tema de los turnos previos"]
+    EXP -->|no| REC
+    CTX --> REC
+
+    REC["Recuperación híbrida"] --> BM["BM25 sobre FTS5<br/>ranking léxico"]
+    REC --> SEM["Coseno contra el vector<br/>de la pregunta · ranking semántico"]
+    SEM -.->|"si no hay servidor<br/>de embeddings"| DEG["Aviso + solo léxico"]
+    BM --> RRF["Fusión por Reciprocal Rank Fusion<br/>se fusionan posiciones, no puntajes"]
+    SEM --> RRF
+    DEG --> RRF
+
+    RRF --> EV{"¿Hay evidencia suficiente?<br/>1· término discriminante<br/>2· score sobre el umbral<br/>3· cobertura de 2+ términos"}
+
+    EV -->|"NO · modo exigente"| ABS["Respuesta de abstención<br/>NO se llama al modelo"]
+    EV -->|"NO · modo flexible<br/>y hay historial"| CONV["Responder desde la conversación<br/>sin citas, sin inventar"]
+    EV -->|SÍ| PRM["Armado del prompt<br/>reglas + fragmentos numerados + consigna del modo"]
+
+    PRM --> LLM["llama-server<br/>generación en streaming SSE"]
+    CONV --> LLM
+
+    LLM --> POST["Post-proceso<br/>LaTeX a notación legible<br/>separación de ecuaciones"]
+    POST --> FIG{"¿Bloque de figura?"}
+    FIG -->|"grafico"| MPL["matplotlib · evaluación<br/>en espacio de nombres cerrado"]
+    FIG -->|"mermaid"| MMD["mermaid-cli"]
+    FIG -->|no| OUT
+    MPL --> OUT["Respuesta en pantalla<br/>+ citas agrupadas por documento<br/>+ figuras"]
+    MMD --> OUT
+    ABS --> OUT
+
+    classDef gate fill:#f6c343,stroke:#a67c00,color:#1c2333
+    classDef stop fill:#e5534b,stroke:#8b1f1a,color:#ffffff
+    classDef proc fill:#1f6feb,stroke:#0b3d91,color:#ffffff
+    class EV,EXP,FIG gate
+    class ABS stop
+    class REC,BM,SEM,RRF,PRM,POST,LLM proc

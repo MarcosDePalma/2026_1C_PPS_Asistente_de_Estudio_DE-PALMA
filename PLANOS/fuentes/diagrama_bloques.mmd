@@ -1,0 +1,50 @@
+---
+title: StudIA - Arquitectura general
+---
+flowchart TB
+    subgraph OFF["Herramientas offline · Python · se ejecutan una vez por corpus"]
+        direction LR
+        CORPUS[("Corpus académico<br/>2.690 documentos · 23 GB<br/>solo lectura")]
+        INGEST["ingest.py<br/>extracción · fragmentación"]
+        OCR["ocr.py<br/>Tesseract · español"]
+        VECT["vectorizar.py<br/>bge-m3"]
+        CORPUS --> INGEST --> OCR --> VECT
+    end
+
+    DB[("studia.db<br/>SQLite + FTS5<br/>~139.000 fragmentos + vectores")]
+    MIDB[("mi_biblioteca.db<br/>bibliografía propia<br/>índice separado")]
+
+    VECT --> DB
+    INGEST -.->|"--archivo"| MIDB
+
+    subgraph APP["Aplicación de escritorio · Qt/QML + C++"]
+        direction TB
+        UI["StudiaPage.qml<br/>materia · modos · citas · figuras"]
+        CTRL["StudiaController<br/>orquestación y streaming"]
+        IDX["StudiaIndex<br/>BM25 + RRF + abstención"]
+        PRM["StudiaPrompt<br/>reglas y consignas"]
+        SES["StudiaSessionStore<br/>una conversación por materia"]
+        UI <--> CTRL
+        CTRL --> IDX
+        CTRL --> PRM
+        CTRL --> SES
+    end
+
+    DB --> IDX
+    MIDB --> IDX
+
+    LS["llama-server<br/>modelo de chat · GPU<br/>lo administra LlamaCode"]
+    ES["llama-server embeddings<br/>bge-m3 · CPU · puerto 8081<br/>lo levanta StudIA"]
+
+    CTRL -->|"SSE"| LS
+    IDX -->|"vector de la consulta"| ES
+
+    BASE["Proyecto base UNLZ_Llamacode<br/>chat · agente · perfiles · servidores<br/>NO modificado"]
+    BASE -. "provee la URL del servidor" .-> CTRL
+
+    classDef nuevo fill:#1f6feb,stroke:#0b3d91,color:#ffffff
+    classDef base fill:#e8eaf0,stroke:#8b93a7,color:#1c2333
+    classDef datos fill:#f6c343,stroke:#a67c00,color:#1c2333
+    class UI,CTRL,IDX,PRM,SES,INGEST,OCR,VECT nuevo
+    class BASE,LS base
+    class DB,MIDB,CORPUS,ES datos

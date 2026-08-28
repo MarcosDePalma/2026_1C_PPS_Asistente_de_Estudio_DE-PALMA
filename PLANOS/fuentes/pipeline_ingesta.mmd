@@ -1,0 +1,32 @@
+---
+title: StudIA - Pipeline de ingesta del corpus
+---
+flowchart TD
+    A[("Carpeta del material<br/>modo solo lectura")] --> B["Recorrido recursivo"]
+    B --> C{"¿Extensión soportada?<br/>pdf docx pptx xlsx txt md ipynb"}
+    C -->|no| X1["Registrar como descartado<br/>con el motivo"]
+    C -->|sí| D{"¿Es material de estudio?"}
+    D -->|"site-packages · __pycache__<br/>metadata · archivos ~$"| X1
+    D -->|sí| E{"¿Huella ya vista?<br/>MD5 de 4 MB + tamaño"}
+    E -->|sí| X2["Saltear duplicado"]
+    E -->|no| F["Extracción de texto<br/>según el formato"]
+
+    F --> G{"¿Se obtuvo texto?"}
+    G -->|no| H["Marcar necesita_ocr<br/>no se descarta"]
+    H --> I["ocr.py · Tesseract español<br/>pasada posterior"]
+    I --> J
+    G -->|sí| J["Fragmentación<br/>~1.200 caracteres con solape"]
+
+    J --> K[("Índice SQLite + FTS5<br/>remove_diacritics 2")]
+    K --> L["vectorizar.py<br/>incremental y re-ejecutable"]
+    L --> M[("Tabla vectores<br/>normalizados + vectores_info")]
+
+    K --> N["estado.py<br/>informe del índice"]
+    X1 --> O["listar_excluidos.py<br/>auditoría de lo que quedó afuera"]
+
+    classDef nuevo fill:#1f6feb,stroke:#0b3d91,color:#ffffff
+    classDef datos fill:#f6c343,stroke:#a67c00,color:#1c2333
+    classDef desc fill:#e8eaf0,stroke:#8b93a7,color:#1c2333
+    class B,F,J,L,I nuevo
+    class A,K,M datos
+    class X1,X2,O,N desc

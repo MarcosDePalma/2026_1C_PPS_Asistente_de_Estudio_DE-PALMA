@@ -1,0 +1,31 @@
+---
+title: StudIA - Módulos del core y responsabilidades
+---
+flowchart TB
+    QML["StudiaPage.qml · StudiaTemas.qml<br/><i>selector de materia · modos · citas · figuras</i>"]
+
+    QML <--> CTRL
+
+    CTRL["<b>StudiaController</b><br/><i>fachada hacia QML</i><br/>orquesta · sostiene el streaming SSE"]
+
+    CTRL --> IDX["<b>StudiaIndex</b><br/><i>de dónde sale la documentación</i><br/>BM25 · fusión RRF · regla de abstención"]
+    CTRL --> PRM["<b>StudiaPrompt</b><br/><i>qué se le dice al modelo</i><br/>reglas · consignas de modo · contexto<br/>sin estado"]
+    CTRL --> SES["<b>StudiaSessionStore</b><br/><i>memoria de la conversación</i><br/>una conversación por materia · persistida"]
+    CTRL --> TXT["<b>StudiaTexto</b><br/><i>legibilidad</i><br/>LaTeX a notación legible<br/>separación de ecuaciones"]
+    CTRL --> PLOT["<b>StudiaPlot</b><br/><i>figuras</i><br/>gráficos de funciones · caché por hash"]
+    CTRL --> TOOL["<b>StudiaHerramientas</b><br/><i>autodiagnóstico</i><br/>qué falta y qué función se pierde"]
+
+    IDX --> EMB["<b>StudiaEmbed</b><br/>vectoriza la consulta · asíncrono"]
+    EMB --> SRV["<b>StudiaEmbedServer</b><br/>ciclo de vida del servidor de embeddings"]
+
+    IDX --> DB[("studia.db · mi_biblioteca.db")]
+    PLOT --> PY["graficar.py · matplotlib"]
+    SRV --> LS["llama-server embeddings · puerto 8081"]
+    CTRL --> CHAT["llama-server del proyecto base<br/><i>solo se consume su URL</i>"]
+
+    classDef nuevo fill:#1f6feb,stroke:#0b3d91,color:#ffffff
+    classDef ext fill:#e8eaf0,stroke:#8b93a7,color:#1c2333
+    classDef datos fill:#f6c343,stroke:#a67c00,color:#1c2333
+    class CTRL,IDX,PRM,SES,TXT,PLOT,TOOL,EMB,SRV,QML nuevo
+    class CHAT,LS,PY ext
+    class DB datos
