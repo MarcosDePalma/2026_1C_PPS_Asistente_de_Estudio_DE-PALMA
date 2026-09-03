@@ -5,11 +5,8 @@ trabajo y el video de demostración.
 
 ## Contenido
 
-| Archivo | Descripción |
-|---|---|
-| `logo_unlz.png` | Logo institucional. Se usa en el README y en la portada del informe. ✅ |
 
-## Contenido previsto
+
 
 | Archivo | Descripción |
 |---|---|
@@ -22,6 +19,7 @@ trabajo y el video de demostración.
 | `07_abstencion.png` | Respuesta de abstención ante una pregunta fuera del corpus. |
 | `08_instalador.png` | Instalador de StudIA corriendo en una PC limpia. |
 | `demo_studia.mp4` | Video de demostración de extremo a extremo (3–5 min). |
+| `logo_unlz.png` | Logo institucional.  |
 
 ## Convenciones
 
