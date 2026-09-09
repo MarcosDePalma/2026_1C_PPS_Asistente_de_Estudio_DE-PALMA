@@ -5,9 +5,6 @@ trabajo y el video de demostración.
 
 ## Contenido
 
-
-
-
 | Archivo | Descripción |
 |---|---|
 | `01_studia_pantalla_principal.png` | Pantalla de StudIA con materia seleccionada y una respuesta con citas. |
@@ -17,9 +14,9 @@ trabajo y el video de demostración.
 | `05_diagrama_mermaid.png` | Respuesta con diagrama Mermaid renderizado. |
 | `06_flashcards_anki.png` | Exportación de flashcards al formato de Anki. |
 | `07_abstencion.png` | Respuesta de abstención ante una pregunta fuera del corpus. |
-| `08_instalador.png` | Instalador de StudIA corriendo en una PC limpia. |
-| `demo_studia.mp4` | Video de demostración de extremo a extremo (3–5 min). |
-| `logo_unlz.png` | Logo institucional.  |
+| `logo_unlz.png` | Logo institucional. |
+
+Pendiente: `demo_studia.mp4` — video de demostración de extremo a extremo (3–5 min).
 
 ## Convenciones
 
@@ -35,4 +32,4 @@ trabajo y el video de demostración.
 ## Referencias
 
 Estas piezas se citan desde el [README principal](../README.md) y desde el
-[informe](../INFORMES/informe_pps.md).
+[informe](../Documentaci%C3%B3n/informe_pps.md).

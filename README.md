@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="MULTIMEDIA/logo_unlz.png" alt="Universidad Nacional de Lomas de Zamora — Facultad de Ingeniería" width="480">
+  <img src="Multimedia/logo_unlz.png" alt="Universidad Nacional de Lomas de Zamora — Facultad de Ingeniería" width="480">
 </p>
 
 # StudIA — Asistente de estudio sobre corpus académico
@@ -112,7 +112,7 @@ versión empaquetada.
   escaneados, prueba con estudiantes, merge a `main` y release.
 
 ### Demo rápida
-- **Video / capturas:** [`MULTIMEDIA/`](MULTIMEDIA/)
+- **Capturas:** [`Multimedia/`](Multimedia/)
 - **Instrucciones express:**
   1. Instalar `StudIA-1.0-Setup.exe`.
   2. Abrir la aplicación → sección **🎓 StudIA**.
@@ -145,8 +145,8 @@ umbral calibrado; y algún fragmento del tope debe cubrir dos o más términos d
 Calibrado sobre 30 preguntas en lenguaje natural contra un corpus de 2.690 documentos,
 responde las 16 cubiertas y se abstiene en las 14 ajenas.
 
-El detalle completo está en el [informe](INFORMES/informe_pps.md) y en el
-[manual técnico](INFORMES/manuales/manual_tecnico.md).
+El detalle completo está en el [informe](Documentaci%C3%B3n/informe_pps.md) y en el
+[manual técnico](Documentaci%C3%B3n/manuales/manual_tecnico.md).
 
 ---
 
@@ -166,9 +166,9 @@ tutor; bibliografía propia adjuntada.
 
 **Interfaz:** sección 🎓 StudIA de la aplicación de escritorio.
 
-![Diagrama de bloques](PLANOS/diagrama_bloques.png)
+![Diagrama de bloques](Diagramas/diagrama_bloques.png)
 
-Diagramas completos en [`PLANOS/`](PLANOS/): arquitectura general, flujo de una
+Diagramas completos en [`Diagramas/`](Diagramas/): arquitectura general, flujo de una
 consulta, pipeline de ingesta y módulos del core.
 
 ---
@@ -193,9 +193,9 @@ consulta, pipeline de ingesta y módulos del core.
    `/autoevaluacion/`, `/flashcards/`, `/ejercitacion/`, `/plan/`.
 4. Verificar las **citas** al pie de cada respuesta.
 
-Guía completa: [manual de usuario](INFORMES/manuales/manual_usuario.md) ·
-[manual de instalación](INFORMES/manuales/manual_instalacion.md) ·
-[manual del corpus](INFORMES/manuales/manual_corpus.md).
+Guía completa: [manual de usuario](Documentaci%C3%B3n/manuales/manual_usuario.md) ·
+[manual de instalación](Documentaci%C3%B3n/manuales/manual_instalacion.md) ·
+[manual del corpus](Documentaci%C3%B3n/manuales/manual_corpus.md).
 
 ### Troubleshooting
 - **El selector de materias está vacío** → no se encuentra `studia.db`: verificar
@@ -240,17 +240,58 @@ del sistema** y sus dependencias.
 ---
 
 ## Esquemáticos / Planos
-- Arquitectura general → [`PLANOS/diagrama_bloques.png`](PLANOS/diagrama_bloques.png)
-- Flujo de una consulta → [`PLANOS/flujo_consulta.png`](PLANOS/flujo_consulta.png)
-- Pipeline de ingesta → [`PLANOS/pipeline_ingesta.png`](PLANOS/pipeline_ingesta.png)
-- Módulos del core → [`PLANOS/modulos_studia.png`](PLANOS/modulos_studia.png)
+- Arquitectura general → [`Diagramas/diagrama_bloques.png`](Diagramas/diagrama_bloques.png)
+- Flujo de una consulta → [`Diagramas/flujo_consulta.png`](Diagramas/flujo_consulta.png)
+- Pipeline de ingesta → [`Diagramas/pipeline_ingesta.png`](Diagramas/pipeline_ingesta.png)
+- Módulos del core → [`Diagramas/modulos_studia.png`](Diagramas/modulos_studia.png)
 
-Las fuentes editables (Mermaid) están en [`PLANOS/fuentes/`](PLANOS/fuentes/).
+Las fuentes editables (Mermaid) están en [`Diagramas/fuentes/`](Diagramas/fuentes/).
 
 ---
 
 ## Fotos / Videos
-Capturas de la aplicación y video de demostración en [`MULTIMEDIA/`](MULTIMEDIA/).
+
+Capturas de la aplicación en funcionamiento. Los archivos están en
+[`Multimedia/`](Multimedia/).
+
+### 1. Pantalla principal de StudIA
+Materia seleccionada y una respuesta con sus citas al pie.
+
+![Pantalla principal de StudIA](Multimedia/01_studia_pantalla_principal.png)
+
+### 2. Modos de tutor
+Barra de modos: resumen, explicación, autoevaluación, flashcards, ejercitación y
+plan de estudio.
+
+![Barra de modos de tutor](Multimedia/02_modos_tutor.png)
+
+### 3. Citas agrupadas por documento
+Cada afirmación queda trazada al documento y la página de origen; las citas son
+clickeables y abren el PDF original.
+
+![Citas agrupadas por documento](Multimedia/03_citas_agrupadas.png)
+
+### 4. Gráfico de función
+Respuesta que incluye una figura generada con matplotlib a partir de un bloque
+`grafico`.
+
+![Respuesta con gráfico de función](Multimedia/04_grafico_funcion.png)
+
+### 5. Diagrama Mermaid
+Respuesta con un diagrama renderizado mediante mermaid-cli.
+
+![Respuesta con diagrama Mermaid](Multimedia/05_diagrama_mermaid.png)
+
+### 6. Exportación de flashcards a Anki
+Mazo generado por el modo flashcards, listo para importar en Anki.
+
+![Exportación de flashcards a Anki](Multimedia/06_flashcards_anki.png)
+
+### 7. Abstención ante una pregunta fuera del corpus
+El sistema informa que no tiene información en lugar de improvisar una respuesta:
+la decisión se toma **antes** de llamar al modelo.
+
+![Respuesta de abstención](Multimedia/07_abstencion.png)
 
 ---
 
@@ -258,23 +299,23 @@ Capturas de la aplicación y video de demostración en [`MULTIMEDIA/`](MULTIMEDI
 
 | Documento | Fuente | PDF |
 |---|---|---|
-| Informe de PPS | [`INFORMES/informe_pps.md`](INFORMES/informe_pps.md) | [`pdf/informe_pps.pdf`](INFORMES/pdf/informe_pps.pdf) |
-| Cronograma | [`INFORMES/cronograma.md`](INFORMES/cronograma.md) | [`pdf/cronograma.pdf`](INFORMES/pdf/cronograma.pdf) |
-| Diagrama de Gantt | [`INFORMES/gantt.md`](INFORMES/gantt.md) | [`pdf/gantt.pdf`](INFORMES/pdf/gantt.pdf) |
-| Manual de instalación | [`manuales/manual_instalacion.md`](INFORMES/manuales/manual_instalacion.md) | [`pdf/manual_instalacion.pdf`](INFORMES/pdf/manual_instalacion.pdf) |
-| Manual de usuario | [`manuales/manual_usuario.md`](INFORMES/manuales/manual_usuario.md) | [`pdf/manual_usuario.pdf`](INFORMES/pdf/manual_usuario.pdf) |
-| Manual técnico | [`manuales/manual_tecnico.md`](INFORMES/manuales/manual_tecnico.md) | [`pdf/manual_tecnico.pdf`](INFORMES/pdf/manual_tecnico.pdf) |
-| Manual del corpus | [`manuales/manual_corpus.md`](INFORMES/manuales/manual_corpus.md) | [`pdf/manual_corpus.pdf`](INFORMES/pdf/manual_corpus.pdf) |
+| Informe de PPS | [`Documentación/informe_pps.md`](Documentaci%C3%B3n/informe_pps.md) | [`pdf/informe_pps.pdf`](Documentaci%C3%B3n/pdf/informe_pps.pdf) |
+| Cronograma | [`Documentación/cronograma.md`](Documentaci%C3%B3n/cronograma.md) | [`pdf/cronograma.pdf`](Documentaci%C3%B3n/pdf/cronograma.pdf) |
+| Diagrama de Gantt | [`Documentación/gantt.md`](Documentaci%C3%B3n/gantt.md) | [`pdf/gantt.pdf`](Documentaci%C3%B3n/pdf/gantt.pdf) |
+| Manual de instalación | [`manuales/manual_instalacion.md`](Documentaci%C3%B3n/manuales/manual_instalacion.md) | [`pdf/manual_instalacion.pdf`](Documentaci%C3%B3n/pdf/manual_instalacion.pdf) |
+| Manual de usuario | [`manuales/manual_usuario.md`](Documentaci%C3%B3n/manuales/manual_usuario.md) | [`pdf/manual_usuario.pdf`](Documentaci%C3%B3n/pdf/manual_usuario.pdf) |
+| Manual técnico | [`manuales/manual_tecnico.md`](Documentaci%C3%B3n/manuales/manual_tecnico.md) | [`pdf/manual_tecnico.pdf`](Documentaci%C3%B3n/pdf/manual_tecnico.pdf) |
+| Manual del corpus | [`manuales/manual_corpus.md`](Documentaci%C3%B3n/manuales/manual_corpus.md) | [`pdf/manual_corpus.pdf`](Documentaci%C3%B3n/pdf/manual_corpus.pdf) |
 
-Los PDF se regeneran con `python INFORMES/build_docs.py`.
+Los PDF se regeneran con `python Documentación/build_docs.py`.
 
 ---
 
 ## Estructura del repositorio
-- [`CODIGO/`](CODIGO/) — Referencia al repositorio donde vive el código fuente.
-- [`INFORMES/`](INFORMES/) — Informe, cronograma, Gantt y manuales (fuentes y PDF).
-- [`PLANOS/`](PLANOS/) — Diagramas de arquitectura y sus fuentes.
-- [`MULTIMEDIA/`](MULTIMEDIA/) — Imágenes y videos.
+- [`Código/`](C%C3%B3digo/) — Referencia al repositorio donde vive el código fuente.
+- [`Documentación/`](Documentaci%C3%B3n/) — Informe, cronograma, Gantt y manuales (fuentes y PDF).
+- [`Diagramas/`](Diagramas/) — Diagramas de arquitectura y sus fuentes.
+- [`Multimedia/`](Multimedia/) — Capturas de la aplicación y logo institucional.
 
 ---
 
@@ -284,11 +325,12 @@ Los PDF se regeneran con `python INFORMES/build_docs.py`.
 - [x] Brief completo (one-liner, pitch, problema, solución, alcance, estado)
 - [x] Instrucciones de uso reproducibles
 - [x] Listado de componentes
-- [x] Diagramas en `PLANOS/`
-- [x] Informe PDF en `INFORMES/`
+- [x] Diagramas en `Diagramas/`
+- [x] Informe PDF en `Documentación/`
 - [x] Cronograma y Gantt
 - [x] Manuales de instalación, usuario, técnico y corpus
-- [ ] Capturas y video demostración en `MULTIMEDIA/`
+- [x] Capturas de la aplicación en `Multimedia/`
+- [ ] Video de demostración en `Multimedia/`
 - [x] Datos académicos completos (materia, docente, tutor)
 
 ---

@@ -1,4 +1,4 @@
-# Planos
+# Diagramas
 
 StudIA es un proyecto de software. Esta
 carpeta contiene los diagramas de la **arquitectura del sistema**.
