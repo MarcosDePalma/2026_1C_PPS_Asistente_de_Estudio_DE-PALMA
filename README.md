@@ -30,15 +30,15 @@ desde su conocimiento general en lugar de hacerlo desde el apunte de la cátedra
 **Problema a resolver.** No hay forma de usar un asistente IA para consultar el material propio, con trazabilidad de la fuente y sin subirlo a un servicio de terceros.
 
 **Objetivo general.** Desarrollar un asistente de estudio de escritorio que responda
-preguntas **usando exclusivamente la documentación académica indexada**, citando el
-documento y la página de cada afirmación, y ejecutándose **íntegramente en la
-computadora del estudiante**.
+preguntas usando exclusivamente la documentación académica indexada, citando el
+documento y la página de cada afirmación, y ejecutándose íntegramente en la
+computadora del estudiante.
 
 **Objetivos específicos**
 
 - Indexar el corpus académico y recuperar los fragmentos pertinentes a una pregunta en
   lenguaje natural.
-- **Abstenerse** de responder cuando el material no cubre la pregunta, en vez de
+- Abstenerse de responder cuando el material no cubre la pregunta, en vez de
   inventar.
 - Ofrecer modos de estudio: resumen, explicación, autoevaluación, flashcards,
   ejercitación y plan de estudio.
@@ -176,7 +176,7 @@ propia conversación.
 Pregunta en lenguaje natural y respuesta construida sobre los fragmentos
 recuperados del material, con sus fuentes al pie.
 
-![Respuesta en modo conversación](Multimedia/11_respuesta.gif)
+![Respuesta en modo conversación](Multimedia/11_respuesta_conversacion.gif)
 
 **De la cita al documento original**
 

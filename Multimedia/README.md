@@ -25,7 +25,7 @@ pantalla y el video de demostración.
 | `08_inicio_app.gif` | Apertura de la aplicación y entrada a la sección StudIA. |
 | `09_indice.gif` | Base documental en disco: índice `studia.db` y corpus en `data_studia`. |
 | `10_elegir_materia.gif` | Lista de materias y selección de una asignatura. |
-| `11_respuesta.gif` | Pregunta y respuesta en modo conversación, con sus fuentes. |
+| `11_respuesta_conversacion.gif` | Pregunta y respuesta en modo conversación, con sus fuentes. |
 | `12_cita_abre_pdf.gif` | Click en una referencia que abre el libro PDF de origen. |
 | `13_modos.gif` | Modos Resumen y Autoevaluación sobre el mismo material. |
 
