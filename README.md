@@ -112,7 +112,7 @@ versión empaquetada.
   escaneados, prueba con estudiantes, merge a `main` y release.
 
 ### Demo rápida
-- **Capturas:** [`Multimedia/`](Multimedia/)
+- **Recorrido en GIF y capturas:** [`Multimedia/`](Multimedia/)
 - **Instrucciones express:**
   1. Instalar `StudIA-1.0-Setup.exe`.
   2. Abrir la aplicación → sección **🎓 StudIA**.
@@ -251,45 +251,92 @@ Las fuentes editables (Mermaid) están en [`Diagramas/fuentes/`](Diagramas/fuent
 
 ## Fotos / Videos
 
-Capturas de la aplicación en funcionamiento. Los archivos están en
-[`Multimedia/`](Multimedia/).
+Todo el material está en [`Multimedia/`](Multimedia/).
 
-### 1. Pantalla principal de StudIA
-Materia seleccionada y una respuesta con sus citas al pie.
+### Recorrido de uso
+
+Los GIF siguen el camino completo, desde abrir la aplicación hasta verificar una
+cita en el PDF original.
+
+**8. Inicio de la aplicación**
+
+![Inicio de la aplicación](Multimedia/08_inicio_app.gif)
+
+**9. La base documental**
+
+Carpeta de instalación con el índice `studia.db` y el corpus en `data_studia`: es
+todo lo que StudIA necesita, y no sale de la máquina.
+
+![Base documental en disco](Multimedia/09_indice.gif)
+
+**10. Selección de materia**
+
+El corpus está organizado por asignatura, en orden de cursada. Hasta que no se
+elige una, la barra de escritura permanece deshabilitada: cada materia tiene su
+propia conversación.
+
+![Selección de materia](Multimedia/10_elegir_materia.gif)
+
+**11. Una respuesta en modo conversación**
+
+Pregunta en lenguaje natural y respuesta construida sobre los fragmentos
+recuperados del material, con sus fuentes al pie.
+
+![Respuesta en modo conversación](Multimedia/11_respuesta.gif)
+
+**12. De la cita al documento original**
+
+Un click en la referencia abre el PDF del que salió la afirmación. Esta es la
+trazabilidad que justifica el proyecto: toda respuesta se puede verificar contra
+el apunte.
+
+![Una cita abriendo el PDF original](Multimedia/12_cita_abre_pdf.gif)
+
+**13. Modos de tutor: resumen y autoevaluación**
+
+El mismo material recuperado, dos consignas distintas al modelo. Cambiar de modo
+no cambia de dónde sale la información.
+
+![Modos resumen y autoevaluación](Multimedia/13_modos.gif)
+
+> El video de demostración de extremo a extremo está en preparación.
+
+### Capturas
+
+Detalle de funciones que el recorrido no cubre.
+
+**1. Pantalla principal de StudIA** — materia seleccionada y una respuesta con sus
+citas al pie.
 
 ![Pantalla principal de StudIA](Multimedia/01_studia_pantalla_principal.png)
 
-### 2. Modos de tutor
-Barra de modos: resumen, explicación, autoevaluación, flashcards, ejercitación y
-plan de estudio.
+**2. Barra de modos** — resumen, explicación, autoevaluación, flashcards,
+ejercitación y plan de estudio, cada uno con su color.
 
 ![Barra de modos de tutor](Multimedia/02_modos_tutor.png)
 
-### 3. Citas agrupadas por documento
-Cada afirmación queda trazada al documento y la página de origen; las citas son
-clickeables y abren el PDF original.
+**3. Citas agrupadas por documento** — un PDF que aportó tres páginas se muestra
+una sola vez, con todas sus páginas.
 
 ![Citas agrupadas por documento](Multimedia/03_citas_agrupadas.png)
 
-### 4. Gráfico de función
-Respuesta que incluye una figura generada con matplotlib a partir de un bloque
+**4. Gráfico de función** — figura generada con matplotlib a partir de un bloque
 `grafico`.
 
 ![Respuesta con gráfico de función](Multimedia/04_grafico_funcion.png)
 
-### 5. Diagrama Mermaid
-Respuesta con un diagrama renderizado mediante mermaid-cli.
+**5. Diagrama Mermaid** — diagrama renderizado mediante mermaid-cli.
 
 ![Respuesta con diagrama Mermaid](Multimedia/05_diagrama_mermaid.png)
 
-### 6. Exportación de flashcards a Anki
-Mazo generado por el modo flashcards, listo para importar en Anki.
+**6. Exportación de flashcards a Anki** — mazo generado por el modo flashcards,
+listo para importar.
 
 ![Exportación de flashcards a Anki](Multimedia/06_flashcards_anki.png)
 
-### 7. Abstención ante una pregunta fuera del corpus
-El sistema informa que no tiene información en lugar de improvisar una respuesta:
-la decisión se toma **antes** de llamar al modelo.
+**7. Abstención ante una pregunta fuera del corpus** — el sistema informa que no
+tiene información en lugar de improvisar. La decisión se toma **antes** de llamar
+al modelo.
 
 ![Respuesta de abstención](Multimedia/07_abstencion.png)
 
@@ -315,7 +362,7 @@ Los PDF se regeneran con `python Documentación/build_docs.py`.
 - [`Código/`](C%C3%B3digo/) — Referencia al repositorio donde vive el código fuente.
 - [`Documentación/`](Documentaci%C3%B3n/) — Informe, cronograma, Gantt y manuales (fuentes y PDF).
 - [`Diagramas/`](Diagramas/) — Diagramas de arquitectura y sus fuentes.
-- [`Multimedia/`](Multimedia/) — Capturas de la aplicación y logo institucional.
+- [`Multimedia/`](Multimedia/) — Recorridos en GIF, capturas y logo institucional.
 
 ---
 
@@ -329,7 +376,7 @@ Los PDF se regeneran con `python Documentación/build_docs.py`.
 - [x] Informe PDF en `Documentación/`
 - [x] Cronograma y Gantt
 - [x] Manuales de instalación, usuario, técnico y corpus
-- [x] Capturas de la aplicación en `Multimedia/`
+- [x] Capturas y recorridos en GIF de la aplicación en `Multimedia/`
 - [ ] Video de demostración en `Multimedia/`
 - [x] Datos académicos completos (materia, docente, tutor)
 
