@@ -2,7 +2,7 @@
   <img src="Multimedia/logo_unlz.png" alt="Universidad Nacional de Lomas de Zamora — Facultad de Ingeniería" width="480">
 </p>
 
-# StudIA — Asistente de estudio sobre corpus académico
+# StudIA — Asistente de estudio con corpus académico
 
 **Tipo:** PPS · **Año:** 2026 — **Cuatrimestre:** 1C
 
@@ -15,12 +15,11 @@
 
 > 📦 **El código vive en su propio repositorio:**
 > **[MarcosDePalma/UNLZ_Llamacode_StudIA](https://github.com/MarcosDePalma/UNLZ_Llamacode_StudIA)** (rama `feature/studia`)
-> Este repositorio contiene la **documentación formal de la PPS**: informe, cronograma,
-> Gantt, manuales, diagramas y multimedia.
+> Este repositorio contiene la **documentación formal de la PPS**: informe, cronograma, Gantt, manuales, diagramas y multimedia.
 
 ---
 
-## Introducción / Objetivo
+## Introducción
 
 **Contexto.** Un estudiante de ingeniería acumula a lo largo de la carrera cientos de
 archivos de material de estudio —apuntes, libros, guías de trabajos prácticos,
@@ -28,8 +27,7 @@ presentaciones—. En este caso concreto: **2.690 documentos y 23 GB**. La infor
 existe, pero encontrarla cuesta, y los asistentes de IA de propósito general responden
 desde su conocimiento general en lugar de hacerlo desde el apunte de la cátedra.
 
-**Problema a resolver.** No hay forma de consultar el material propio en lenguaje
-natural con trazabilidad de la fuente y sin subirlo a un servicio de terceros.
+**Problema a resolver.** No hay forma de usar un asistente IA para consultar el material propio, con trazabilidad de la fuente y sin subirlo a un servicio de terceros.
 
 **Objetivo general.** Desarrollar un asistente de estudio de escritorio que responda
 preguntas **usando exclusivamente la documentación académica indexada**, citando el
@@ -41,11 +39,11 @@ computadora del estudiante**.
 - Indexar el corpus académico y recuperar los fragmentos pertinentes a una pregunta en
   lenguaje natural.
 - **Abstenerse** de responder cuando el material no cubre la pregunta, en vez de
-  improvisar.
+  inventar.
 - Ofrecer modos de estudio: resumen, explicación, autoevaluación, flashcards,
   ejercitación y plan de estudio.
-- Mostrar citas verificables que abran el documento original.
-- Permitir sumar bibliografía propia sin contaminar el índice de la cátedra.
+- Mostrar citas verificables, que abran el documento original.
+- Permitir sumar bibliografía propia sin mezclarse con el índice de la cátedra.
 - Empaquetar el sistema para instalarlo en una PC sin herramientas de desarrollo.
 - Integrarse al proyecto base **sin modificar** sus subsistemas existentes.
 
@@ -54,69 +52,41 @@ computadora del estudiante**.
 ## Índice
 - [Brief](#brief)
 - [Descripción técnica](#descripción-técnica)
-- [Arquitectura del sistema](#arquitectura-del-sistema)
+
 - [Instrucciones de uso](#instrucciones-de-uso)
-- [Tecnologías utilizadas](#tecnologías-utilizadas)
-- [Listado de componentes](#listado-de-componentes)
-- [Esquemáticos / Planos](#esquemáticos--planos)
-- [Fotos / Videos](#fotos--videos)
+
+
+
+- [Recorrido multimedia](#recorrido-multimedia)
 - [Documentación](#documentación)
-- [Estructura del repositorio](#estructura-del-repositorio)
+
 - [Autor](#autor)
 
 ---
 
 ## Brief
 
-**One-liner.** StudIA responde preguntas sobre los apuntes del propio estudiante,
+**StudIA** responde preguntas a partir de los apuntes del propio estudiante,
 citando documento y página, sin conexión y sin que el material salga de su computadora.
 
-**Elevator pitch.** Este proyecto **StudIA** (PPS, 2026 1C) resuelve el problema de
-**consultar material de estudio disperso en miles de archivos** mediante un **asistente
-con recuperación aumentada (RAG) sobre un índice local del corpus académico**. Está
-orientado a **estudiantes de ingeniería** y permite **preguntar en lenguaje natural y
-obtener respuestas con la cita exacta del apunte**. Se implementa con **C++/Qt, SQLite
-FTS5 y modelos de lenguaje ejecutados localmente**, y se valida mediante **322 pruebas
+Este proyecto resuelve el problema de
+**tener material de estudio disperso en miles de archivos** mediante un **asistente
+con índice local del corpus académico**. El desarrollo está
+orientado a **estudiantes de Ingeniería Mecatrónica de la UNLZ**, aunque es una plataforma capaz de adaptarse a otras carreras sin gran esfuerzo. Cada actualización del programa se valida mediante **pruebas
 automatizadas y un conjunto calibrado de 30 preguntas reales**.
 
-### Problema
-- **Contexto:** estudio de materias de ingeniería con material propio de la carrera.
-- **Dolor principal:** encontrar dónde se explica un tema exige recordar en qué archivo
-  estaba; un asistente general responde desde internet, no desde el apunte evaluable.
-- **Impacto:** tiempo perdido, respuestas plausibles pero falsas, material académico
-  subido a servicios de terceros.
 
-### Solución propuesta
-- **Qué hace:**
-  - Responde preguntas sobre el material indexado, **con citas clickeables**.
-  - **Se abstiene** cuando el material no alcanza, antes de llamar al modelo.
-  - Siete **modos de tutor**, gráficos de funciones, diagramas y exportación a Anki.
 - **Cómo lo hace:** ingesta offline → índice SQLite/FTS5 → recuperación híbrida
   (BM25 + embeddings, fusión RRF) → control de evidencia → prompt con fragmentos
   numerados → modelo local → respuesta con citas.
-- **Valor diferencial:** la garantía anti-invención **no depende del prompt**: es una
-  decisión previa a la llamada al modelo, verificable por pruebas.
-
+- **Valor diferencial:** la garantía de que no se va a inventar las respuestas, y que explica con contenido de cátedra. 
 ### Alcance
-**Incluye:** módulo integrado a la aplicación de escritorio; ingesta de PDF/DOCX/PPTX/
-XLSX/TXT/MD/IPYNB con OCR; recuperación híbrida; modos de tutor; instalador.
-**No incluye:** servicio en la nube o multiusuario; entrenamiento de modelos;
-corrección automática de exámenes; sistemas operativos distintos de Windows en la
-versión empaquetada.
+**Incluye:** Módulo integrado a la aplicación de escritorio; ingesta de PDF/DOCX/PPTX/
+XLSX/TXT/MD/IPYNB con OCR; modos; instalador.
 
-### Estado del proyecto
-- **Madurez:** MVP validado sobre corpus real, con instalador funcionando.
-- **Qué funciona hoy:** ingesta, recuperación híbrida, abstención calibrada, 7 modos,
-  citas, figuras, exportación a Anki, bibliografía propia, instalador de un archivo.
-- **Próximos pasos:** validación en máquina virtual limpia, OCR del remanente de
-  escaneados, prueba con estudiantes, merge a `main` y release.
 
-### Demo rápida
-- **Recorrido en GIF y capturas:** [`Multimedia/`](Multimedia/)
-- **Instrucciones express:**
-  1. Instalar `StudIA-1.0-Setup.exe`.
-  2. Abrir la aplicación → sección **🎓 StudIA**.
-  3. Elegir una materia y preguntar.
+**No incluye:** Servicio en la nube; entrenamiento de modelos.
+
 
 ---
 
@@ -124,9 +94,9 @@ versión empaquetada.
 
 StudIA se implementó como **módulo del proyecto institucional**
 [UNLZ_Llamacode](https://github.com/cristianlukas/UNLZ_Llamacode), una estación de
-trabajo de IA local desarrollada en la Facultad (Qt/QML + C++).
+trabajo de IA local desarrollada en la Facultad.
 
-El aporte de esta PPS son **55 archivos y ~14.700 líneas** en 7 iteraciones:
+El aporte de esta PPS son **55 archivos y ~14.700 líneas**.
 
 | Área | Líneas | Contenido |
 |---|---:|---|
@@ -135,63 +105,26 @@ El aporte de esta PPS son **55 archivos y ~14.700 líneas** en 7 iteraciones:
 | Pruebas (`tests/`) | 3.139 | suite QtTest del módulo |
 | Interfaz (`qml/`) | 1.625 | página de StudIA y conversaciones por materia |
 | Instalador (`installer/`) | 543 | Inno Setup y distribución del corpus |
-| Documentación y build | 437 | README, guía del proyecto, CMake |
+| Documentación y build | 437 | README, guía del proyecto |
 
-**La decisión de diseño central es la abstención determinística.** Si la recuperación
-no encuentra evidencia suficiente, el sistema responde que no tiene información **sin
-llegar a llamar al modelo**, según tres reglas: la pregunta debe tener al menos un
-término discriminante; el score BM25 normalizado por esos términos debe superar un
-umbral calibrado; y algún fragmento del tope debe cubrir dos o más términos distintos.
-Calibrado sobre 30 preguntas en lenguaje natural contra un corpus de 2.690 documentos,
-responde las 16 cubiertas y se abstiene en las 14 ajenas.
-
-El detalle completo está en el [informe](Documentaci%C3%B3n/informe_pps.md) y en el
-[manual técnico](Documentaci%C3%B3n/manuales/manual_tecnico.md).
 
 ---
 
-## Arquitectura del sistema
-
-**Entradas:** corpus académico (carpetas por materia); pregunta del estudiante; modo de
-tutor; bibliografía propia adjuntada.
-
-**Procesamiento:**
-- *Offline (Python):* extracción de texto → fragmentación (1.200 caracteres, 200 de
-  solape) → índice SQLite + FTS5 → OCR → vectorización con bge-m3.
-- *En línea (C++):* recuperación híbrida BM25 + coseno con fusión RRF → control de
-  evidencia → armado del prompt → generación por streaming SSE.
-
-**Salidas:** respuesta con citas agrupadas por documento; gráficos de funciones
-(matplotlib); diagramas (Mermaid); flashcards exportables a Anki.
-
-**Interfaz:** sección 🎓 StudIA de la aplicación de escritorio.
-
-![Diagrama de bloques](Diagramas/diagrama_bloques.png)
-
-Diagramas completos en [`Diagramas/`](Diagramas/): arquitectura general, flujo de una
-consulta, pipeline de ingesta y módulos del core.
-
----
 
 ## Instrucciones de uso
 
 ### Requisitos previos
-- Windows 10/11 de 64 bits, 8 GB de RAM (16 GB recomendados), ~3 GB de disco.
+- Windows 10/11 de 64 bits, 8 GB de RAM, ~3 GB de disco.
 - GPU opcional (sin ella el modelo responde más lento).
 - Opcionales, para funciones puntuales: Python 3, matplotlib, Node.js + mermaid-cli,
   Tesseract con español. **La aplicación detecta cuáles faltan y ofrece instalarlas.**
 
 ### Instalación
-1. Ejecutar `StudIA-1.0-Setup.exe` (no requiere permisos de administrador).
+1. Ejecutar `StudIA-1.0-Setup.exe`.
 2. Ejecutar `instalar_dependencias.bat` o aceptar la instalación que ofrece la app.
-3. *(Opcional)* `copiar_documentos.bat` para que las citas abran el PDF original.
+3. *(Opcional)* Agregar `DATA_StudIA` en la base documental para que las citas abran el PDF original.
 
-### Uso
-1. Abrir la aplicación y entrar a **🎓 StudIA**.
-2. Elegir una **materia** (obligatorio: cada una tiene su propia conversación).
-3. Preguntar en lenguaje natural, o usar un modo: `/resumen/`, `/explicacion/`,
-   `/autoevaluacion/`, `/flashcards/`, `/ejercitacion/`, `/plan/`.
-4. Verificar las **citas** al pie de cada respuesta.
+
 
 Guía completa: [manual de usuario](Documentaci%C3%B3n/manuales/manual_usuario.md) ·
 [manual de instalación](Documentaci%C3%B3n/manuales/manual_instalacion.md) ·
@@ -202,89 +135,50 @@ Guía completa: [manual de usuario](Documentaci%C3%B3n/manuales/manual_usuario.m
   `<instalación>\StudIA\studia.db`.
 - **Siempre se abstiene** → índice vacío o de otro corpus: re-indexar y recalibrar el
   umbral.
-- **Las citas no abren el documento** → el corpus no fue copiado: `copiar_documentos.bat`.
+- **Las citas no abren el documento** → el corpus no fue copiado o la ruta es incorrrecta: `copiar_documentos.bat`.
 - **Los gráficos salen como texto** → falta matplotlib o mermaid-cli.
 
----
-
-## Tecnologías utilizadas
-- **Programación:** C++17, QML, Python 3.
-- **Framework:** Qt 6 (Quick/QML), CMake, Visual Studio 2022.
-- **Datos / búsqueda:** SQLite con FTS5 (BM25), vectores normalizados para coseno.
-- **IA:** modelos de lenguaje locales vía `llama.cpp` (GGUF); embeddings **bge-m3**;
-  RAG con fusión **Reciprocal Rank Fusion**.
-- **Procesamiento de documentos:** pypdf, python-docx, python-pptx, openpyxl,
-  pypdfium2, Tesseract OCR (español).
-- **Figuras:** matplotlib, mermaid-cli.
-- **Empaquetado:** Inno Setup, robocopy.
-- **Pruebas:** QtTest, unittest, ctest.
 
 ---
 
-## Listado de componentes
 
-Al tratarse de un desarrollo de software, el listado corresponde a los **componentes
-del sistema** y sus dependencias.
 
-| Componente | Cant. | Especificación | Función |
-|---|---:|---|---|
-| Módulo core StudIA | 9 clases | C++17 / Qt 6 | Recuperación, abstención, prompts, sesiones |
-| Interfaz StudIA | 2 | QML | Selector de materia, modos, citas, figuras |
-| Herramientas offline | 11 | Python 3 | Ingesta, OCR, vectorización, auditoría, graficador |
-| Índice del corpus | 1 | SQLite + FTS5 · ~139.000 fragmentos | Almacenamiento y búsqueda del material |
-| Modelo de chat | 1 | GGUF vía `llama.cpp` | Generación de las respuestas |
-| Modelo de embeddings | 1 | bge-m3 (CPU, puerto 8081) | Búsqueda semántica |
-| Suites de prueba | 4 | QtTest + unittest · 322 casos | Verificación automatizada |
-| Instalador | 1 | Inno Setup · 1,21 GB | Despliegue en PC sin herramientas de desarrollo |
+## Recorrido Multimedia
 
----
 
-## Esquemáticos / Planos
-- Arquitectura general → [`Diagramas/diagrama_bloques.png`](Diagramas/diagrama_bloques.png)
-- Flujo de una consulta → [`Diagramas/flujo_consulta.png`](Diagramas/flujo_consulta.png)
-- Pipeline de ingesta → [`Diagramas/pipeline_ingesta.png`](Diagramas/pipeline_ingesta.png)
-- Módulos del core → [`Diagramas/modulos_studia.png`](Diagramas/modulos_studia.png)
 
-Las fuentes editables (Mermaid) están en [`Diagramas/fuentes/`](Diagramas/fuentes/).
 
----
 
-## Fotos / Videos
 
-Todo el material está en [`Multimedia/`](Multimedia/).
 
-### Recorrido de uso
+**Inicio de la aplicación**
 
-Los GIF siguen el camino completo, desde abrir la aplicación hasta verificar una
-cita en el PDF original.
-
-**8. Inicio de la aplicación**
+Se inicia la app UNLZ_Llamacode y el servidor local.
 
 ![Inicio de la aplicación](Multimedia/08_inicio_app.gif)
 
-**9. La base documental**
+**Base documental**
 
-Carpeta de instalación con el índice `studia.db` y el corpus en `data_studia`: es
-todo lo que StudIA necesita, y no sale de la máquina.
+Carpeta de instalación con el índice studia.db y el corpus en DATA_StudIA: es
+todo lo que StudIA necesita.
 
 ![Base documental en disco](Multimedia/09_indice.gif)
 
-**10. Selección de materia**
+**Selección de materia**
 
-El corpus está organizado por asignatura, en orden de cursada. Hasta que no se
-elige una, la barra de escritura permanece deshabilitada: cada materia tiene su
+El corpus está organizado por asignatura, en orden de cursada. Cada materia tiene su
 propia conversación.
 
 ![Selección de materia](Multimedia/10_elegir_materia.gif)
 
-**11. Una respuesta en modo conversación**
+**Respuesta en modo conversación**
 
 Pregunta en lenguaje natural y respuesta construida sobre los fragmentos
 recuperados del material, con sus fuentes al pie.
 
 ![Respuesta en modo conversación](Multimedia/11_respuesta.gif)
 
-**12. De la cita al documento original**
+**De la cita al documento original**
 
 Un click en la referencia abre el PDF del que salió la afirmación. Esta es la
 trazabilidad que justifica el proyecto: toda respuesta se puede verificar contra
@@ -292,36 +186,47 @@ el apunte.
 
 ![Una cita abriendo el PDF original](Multimedia/12_cita_abre_pdf.gif)
 
-**13. Modos de tutor: resumen y autoevaluación**
+**Modos de tutor: resumen y autoevaluación**
 
-El mismo material recuperado, dos consignas distintas al modelo. Cambiar de modo
-no cambia de dónde sale la información.
+Se le dieron dos consignas distintas al modelo, para mostrar algunos de sus modos.
 
 ![Modos resumen y autoevaluación](Multimedia/13_modos.gif)
 
-> El video de demostración de extremo a extremo está en preparación.
+---
+
+
+
 
 ### Capturas
 
-Detalle de funciones que el recorrido no cubre.
 
-**1. Pantalla principal de StudIA** — materia seleccionada y una respuesta con sus
-citas al pie.
+
+**1. Pantalla principal de StudIA** — materia seleccionada y respuesta en modo explicación.
 
 ![Pantalla principal de StudIA](Multimedia/01_studia_pantalla_principal.png)
 
-**2. Barra de modos** — resumen, explicación, autoevaluación, flashcards,
-ejercitación y plan de estudio, cada uno con su color.
+**2. Barra de modos** — conversación, resumen, explicación, autoevaluación, flashcards,
+ejercitación y plan de estudio.
 
-![Barra de modos de tutor](Multimedia/02_modos_tutor.png)
+![Modo conversación](Multimedia/02_00_conversacion.png)
 
-**3. Citas agrupadas por documento** — un PDF que aportó tres páginas se muestra
-una sola vez, con todas sus páginas.
+![Modo resumen](Multimedia/02_01_resumen.png)
+
+![Modo explicación](Multimedia/02_02_explicacion.png)
+
+![Modo autoevaluación](Multimedia/02_03_autoevaluacion.png)
+
+![Modo flashcards](Multimedia/02_04_flashcards.png)
+
+![Modo ejercitación](Multimedia/02_05_ejercitacion.png)
+
+![Modo plan de estudio](Multimedia/02_06_pde.png)
+
+**3. Citas agrupadas por documento** — los PDF de donde sale la información.
 
 ![Citas agrupadas por documento](Multimedia/03_citas_agrupadas.png)
 
-**4. Gráfico de función** — figura generada con matplotlib a partir de un bloque
-`grafico`.
+**4. Gráfico de función** — figura generada con matplotlib.
 
 ![Respuesta con gráfico de función](Multimedia/04_grafico_funcion.png)
 
@@ -329,14 +234,12 @@ una sola vez, con todas sus páginas.
 
 ![Respuesta con diagrama Mermaid](Multimedia/05_diagrama_mermaid.png)
 
-**6. Exportación de flashcards a Anki** — mazo generado por el modo flashcards,
-listo para importar.
+**6. Flashcards** — exportables en Anki.
 
 ![Exportación de flashcards a Anki](Multimedia/06_flashcards_anki.png)
 
-**7. Abstención ante una pregunta fuera del corpus** — el sistema informa que no
-tiene información en lugar de improvisar. La decisión se toma **antes** de llamar
-al modelo.
+**7. Abstención ante una pregunta fuera del corpus** — informa que no
+tiene información suficiente.
 
 ![Respuesta de abstención](Multimedia/07_abstencion.png)
 
@@ -344,52 +247,44 @@ al modelo.
 
 ## Documentación
 
+La documentación formal de la PPS.
+
 | Documento | Fuente | PDF |
 |---|---|---|
 | Informe de PPS | [`Documentación/informe_pps.md`](Documentaci%C3%B3n/informe_pps.md) | [`pdf/informe_pps.pdf`](Documentaci%C3%B3n/pdf/informe_pps.pdf) |
 | Cronograma | [`Documentación/cronograma.md`](Documentaci%C3%B3n/cronograma.md) | [`pdf/cronograma.pdf`](Documentaci%C3%B3n/pdf/cronograma.pdf) |
 | Diagrama de Gantt | [`Documentación/gantt.md`](Documentaci%C3%B3n/gantt.md) | [`pdf/gantt.pdf`](Documentaci%C3%B3n/pdf/gantt.pdf) |
 | Manual de instalación | [`manuales/manual_instalacion.md`](Documentaci%C3%B3n/manuales/manual_instalacion.md) | [`pdf/manual_instalacion.pdf`](Documentaci%C3%B3n/pdf/manual_instalacion.pdf) |
-| Manual de usuario | [`manuales/manual_usuario.md`](Documentaci%C3%B3n/manuales/manual_usuario.md) | [`pdf/manual_usuario.pdf`](Documentaci%C3%B3n/pdf/manual_usuario.pdf) |
-| Manual técnico | [`manuales/manual_tecnico.md`](Documentaci%C3%B3n/manuales/manual_tecnico.md) | [`pdf/manual_tecnico.pdf`](Documentaci%C3%B3n/pdf/manual_tecnico.pdf) |
-| Manual del corpus | [`manuales/manual_corpus.md`](Documentaci%C3%B3n/manuales/manual_corpus.md) | [`pdf/manual_corpus.pdf`](Documentaci%C3%B3n/pdf/manual_corpus.pdf) |
 
-Los PDF se regeneran con `python Documentación/build_docs.py`.
 
----
 
-## Estructura del repositorio
-- [`Código/`](C%C3%B3digo/) — Referencia al repositorio donde vive el código fuente.
-- [`Documentación/`](Documentaci%C3%B3n/) — Informe, cronograma, Gantt y manuales (fuentes y PDF).
-- [`Diagramas/`](Diagramas/) — Diagramas de arquitectura y sus fuentes.
-- [`Multimedia/`](Multimedia/) — Recorridos en GIF, capturas y logo institucional.
 
----
-
-## Checklist de entrega
-- [x] Naming del repo: `2026_1C_PPS_Asistente_de_Estudio_DE-PALMA`
-- [x] Título, autor, carrera, tipo, año y cuatrimestre
-- [x] Brief completo (one-liner, pitch, problema, solución, alcance, estado)
-- [x] Instrucciones de uso reproducibles
-- [x] Listado de componentes
-- [x] Diagramas en `Diagramas/`
-- [x] Informe PDF en `Documentación/`
-- [x] Cronograma y Gantt
-- [x] Manuales de instalación, usuario, técnico y corpus
-- [x] Capturas y recorridos en GIF de la aplicación en `Multimedia/`
-- [ ] Video de demostración en `Multimedia/`
-- [x] Datos académicos completos (materia, docente, tutor)
 
 ---
 
 ## Autor
-**De Palma, Marcos Agustin**
-Ingeniería Mecatrónica · Facultad de Ingeniería, UNLZ
-Docente / Tutor: **Cristian Lukaszewicz**
-Contacto: marcosdepalma03@gmail.com · GitHub [@MarcosDePalma](https://github.com/MarcosDePalma)
+
+<table>
+<tr> 
+
+### DE PALMA, Marcos Agustín
+
+Ingeniería Mecatrónica — FI-UNLZ
+
+📧 <marcosdepalma03@gmail.com>
+
+💻 GitHub [@MarcosDePalma](https://github.com/MarcosDePalma)
+
+</td></tr>
+</table>
 
 ---
 
-## About (descripción corta del repositorio)
+<div align="center">
 
-> PPS — StudIA: asistente de estudio con RAG local sobre corpus académico — FI-UNLZ — 2026 — De Palma, Marcos Agustin
+**UNLZ_LLAMACODE_STUDIA**
+
+**Facultad de Ingeniería — Universidad Nacional de Lomas de Zamora**<br>
+PPS · 2026 · 1.er Cuatrimestre
+
+
