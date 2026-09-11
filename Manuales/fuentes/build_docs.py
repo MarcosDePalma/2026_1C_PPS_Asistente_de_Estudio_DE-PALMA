@@ -1,15 +1,16 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Genera los PDF de la documentacion de la PPS a partir de los .md.
+Genera los PDF de los manuales de la PPS a partir de los .md.
 
-El .md es la fuente (versionable y diffeable); el PDF es la entrega. La conversion
-usa el modo headless de Chrome o Edge, asi que no hace falta LaTeX ni pandoc: en
-Windows ya hay un navegador instalado.
+El .md es la fuente (versionable y diffeable); el PDF es la entrega, y queda en
+Manuales/ con el mismo nombre que su fuente. La conversion usa el modo headless
+de Chrome o Edge, asi que no hace falta LaTeX ni pandoc: en Windows ya hay un
+navegador instalado.
 
-    python INFORMES/build_docs.py                 todo
-    python INFORMES/build_docs.py --solo informe_pps
-    python INFORMES/build_docs.py --sin-diagramas  no llama a mmdc
+    python Manuales/fuentes/build_docs.py                          todos
+    python Manuales/fuentes/build_docs.py --solo Manual_de_Usuario
+    python Manuales/fuentes/build_docs.py --sin-diagramas          no llama a mmdc
 
 Requiere:  pip install markdown
 Opcional:  npm install -g @mermaid-js/mermaid-cli   (para los bloques ```mermaid```)
@@ -32,21 +33,21 @@ try:
 except ImportError:
     sys.exit("Falta el modulo 'markdown'.  Instalalo con:  pip install markdown")
 
-AQUI = Path(__file__).resolve().parent          # INFORMES/
-RAIZ = AQUI.parent                              # raiz del repo de la PPS
+AQUI = Path(__file__).resolve().parent          # Manuales/fuentes/
+SALIDA = AQUI.parent                            # Manuales/  (el PDF va al lado)
+RAIZ = SALIDA.parent                            # raiz del repo de la PPS
 ASSETS = AQUI / "assets"
-SALIDA = AQUI / "pdf"
 
-# Documentos a generar.  'secciones_en_pagina_nueva' arranca cada ## en una hoja:
-# tiene sentido en el informe y no en los manuales, que son mas cortos.
+# Documentos a generar. El PDF hereda el nombre del .md, asi que la fuente y la
+# entrega comparten nombre: Manual_Tecnico.md -> ../Manual_Tecnico.pdf.
+#
+# Ya no se generan aca ni el informe (se escribe a mano, en Word) ni el Gantt
+# (es el Diagrama_de_Gantt.xlsx) ni el cronograma (se dio de baja).
 DOCUMENTOS = [
-    {"md": AQUI / "informe_pps.md",                     "secciones_en_pagina_nueva": True},
-    {"md": AQUI / "cronograma.md",                      "secciones_en_pagina_nueva": False},
-    {"md": AQUI / "gantt.md",                           "secciones_en_pagina_nueva": False},
-    {"md": AQUI / "manuales" / "manual_instalacion.md", "secciones_en_pagina_nueva": False},
-    {"md": AQUI / "manuales" / "manual_usuario.md",     "secciones_en_pagina_nueva": False},
-    {"md": AQUI / "manuales" / "manual_tecnico.md",     "secciones_en_pagina_nueva": False},
-    {"md": AQUI / "manuales" / "manual_corpus.md",      "secciones_en_pagina_nueva": False},
+    {"md": AQUI / "Guía_de_Instalación.md",  "secciones_en_pagina_nueva": False},
+    {"md": AQUI / "Manual_de_Usuario.md",       "secciones_en_pagina_nueva": False},
+    {"md": AQUI / "Manual_Técnico.md",         "secciones_en_pagina_nueva": False},
+    {"md": AQUI / "Vectorizar_Nuevo_Corpus.md", "secciones_en_pagina_nueva": False},
 ]
 
 NAVEGADORES = [

@@ -1,4 +1,4 @@
-# Manual del corpus e ingesta — StudIA
+# Vectorizar un Nuevo Corpus — StudIA
 
 **Versión:** 1.0 · **Fecha:** 18/09/2026
 **Para:** quien tenga que indexar un corpus académico propio (otra carrera, otro año,
@@ -35,8 +35,8 @@ Recomendaciones:
 - **Cuidar la privacidad**: listados de alumnos, planillas con datos personales y
   documentación administrativa no deberían entrar al índice. En el corpus original se
   excluyeron explícitamente los archivos con listados de nombres.
-- **Rutas cortas**: Windows admite hasta 260 caracteres. Rutas más largas dan
-  problemas al copiar el corpus (§6).
+- **Rutas cortas**: Windows admite hasta 260 caracteres. Conviene no acercarse: en el
+  corpus de referencia, ya reducido, la ruta más larga quedó en 219.
 
 Formatos que se leen: **PDF, DOCX, PPTX, XLSX, TXT, MD, IPYNB**. Los formatos viejos de
 Office (`.doc`, `.ppt`, `.xls`, `.rtf`, `.odt`) se registran pero no se extraen:
@@ -80,7 +80,8 @@ vuelve a correr sin rehacer la corrida entera.
 
 ### Cuánto tarda
 
-Para el corpus de referencia (2.690 documentos, 23 GB) la ingesta completa lleva
+Para el corpus de referencia (2.505 documentos indexados, 23 GB de origen) la ingesta
+completa lleva
 **varias horas**, dominada por la extracción de texto de los PDF grandes. Conviene
 correrla de a materias (`--materia`) la primera vez, para detectar problemas temprano.
 
@@ -129,8 +130,9 @@ Requiere **Tesseract con el paquete de español**. Es el paso más lento de todo
 proceso: conviene empezar con `--limite 5` para verificar la calidad antes de lanzarlo
 sobre cientos de documentos.
 
-En el corpus de referencia quedaron **154 documentos** con formato incompatible o con
-OCR fallido, registrados y auditables.
+En el corpus de referencia el OCR se completó sobre todos los escaneados: los 2.505
+documentos del índice quedaron en estado `ok`, ninguno sin texto extraído. Lo que el
+ingestor descarta queda igualmente registrado y auditable (§3).
 
 ---
 
@@ -184,24 +186,33 @@ python tools/studia/copiar_corpus.py \
 ```
 
 `--simular` informa qué haría sin copiar nada. En el corpus de referencia la reducción
-fue de **23 GB a 7,7 GB (2.937 archivos)**.
+fue de **23 GB a 5,93 GB (2.505 archivos)**.
 
-Para llevarlo a otra máquina:
+### Cómo se entrega
 
-```powershell
-.\installer\copiar_documentos.ps1 -Destino C:\StudIA_Docs
+El material se arma en **una sola carpeta con dos cosas adentro**:
+
+```
+MiCarpeta    studia.db        el índice
+    DATA_StudIA\     los documentos originales
 ```
 
-Usa `robocopy` porque las rutas del material superan los 260 caracteres de Windows y el
-Explorador se planta. El destino tiene que ser **corto**: dentro de la carpeta de
-instalación se perdían 76 de 2.937 archivos; en `C:\StudIA_Docs`, 2.
+Esa carpeta se copia tal cual a la otra máquina —disco interno, externo o pendrive— y
+desde la aplicación se elige el `studia.db` con **Abrir índice**. De esa misma ruta sale
+también dónde están los documentos, porque se buscan en la `DATA_StudIA` hermana del
+índice.
+
+**La única condición es no separarlas.** No hay scripts de copiado ni rutas que
+registrar: por eso el destino de `--destino` conviene que sea la carpeta que va a viajar,
+con el `studia.db` al lado.
 
 ---
 
 ## 7. Recalibrar la abstención — **paso obligatorio**
 
-El umbral por defecto (`-7.0`) se calibró para un índice de ~139.000 fragmentos. **Los
-scores de BM25 dependen del tamaño del corpus: un umbral de otro índice no sirve.**
+El umbral por defecto (`-7.0`) se calibró para un índice de cientos de miles de
+fragmentos. **Los scores de BM25 dependen del tamaño del corpus: un umbral de otro
+índice no sirve.**
 
 1. Escribir **30 preguntas en lenguaje natural**: la mitad sobre temas cubiertos por el
    material, la mitad ajenas al corpus.
@@ -229,5 +240,6 @@ Señales de que el umbral quedó mal:
 - [ ] `ocr.py` corrido sobre los `necesita_ocr`
 - [ ] `vectorizar.py` completo, `vectores_info` con la dimensión correcta
 - [ ] Umbral de abstención recalibrado con 30 preguntas
-- [ ] Rutas configuradas en la aplicación (`studia/rutaIndice`, `studia/carpetaDocumentos`)
+- [ ] `studia.db` y `DATA_StudIA` juntos en la carpeta que se va a entregar
+- [ ] Índice abierto desde la aplicación con **Abrir índice**
 - [ ] Prueba final: una pregunta cubierta responde con citas; una ajena se abstiene

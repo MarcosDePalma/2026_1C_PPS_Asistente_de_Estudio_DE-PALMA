@@ -15,7 +15,7 @@
 
 > 📦 **El código vive en su propio repositorio:**
 > **[MarcosDePalma/UNLZ_Llamacode_StudIA](https://github.com/MarcosDePalma/UNLZ_Llamacode_StudIA)** (rama `feature/studia`)
-> Este repositorio contiene la **documentación formal de la PPS**: informe, cronograma, Gantt, manuales, diagramas y multimedia.
+> Este repositorio contiene la **documentación formal de la PPS**: informe, Gantt, manuales, diagramas y multimedia.
 
 ---
 
@@ -126,9 +126,9 @@ El aporte de esta PPS son **55 archivos y ~14.700 líneas**.
 
 
 
-Guía completa: [manual de usuario](Documentaci%C3%B3n/manuales/manual_usuario.md) ·
-[manual de instalación](Documentaci%C3%B3n/manuales/manual_instalacion.md) ·
-[manual del corpus](Documentaci%C3%B3n/manuales/manual_corpus.md).
+Guía completa: [manual de usuario](Manuales/Manual_de_Usuario.pdf) ·
+[manual de instalación](Manuales/Gu%C3%ADa_de_Instalaci%C3%B3n.pdf) ·
+[manual del corpus](Manuales/Vectorizar_Nuevo_Corpus.pdf).
 
 ### Troubleshooting
 - **El selector de materias está vacío** → no se encuentra `studia.db`: verificar
@@ -249,12 +249,11 @@ tiene información suficiente.
 
 La documentación formal de la PPS.
 
-| Documento | Fuente | PDF |
-|---|---|---|
-| Informe de PPS | [`Documentación/informe_pps.md`](Documentaci%C3%B3n/informe_pps.md) | [`pdf/informe_pps.pdf`](Documentaci%C3%B3n/pdf/informe_pps.pdf) |
-| Cronograma | [`Documentación/cronograma.md`](Documentaci%C3%B3n/cronograma.md) | [`pdf/cronograma.pdf`](Documentaci%C3%B3n/pdf/cronograma.pdf) |
-| Diagrama de Gantt | [`Documentación/gantt.md`](Documentaci%C3%B3n/gantt.md) | [`pdf/gantt.pdf`](Documentaci%C3%B3n/pdf/gantt.pdf) |
-| Manual de instalación | [`manuales/manual_instalacion.md`](Documentaci%C3%B3n/manuales/manual_instalacion.md) | [`pdf/manual_instalacion.pdf`](Documentaci%C3%B3n/pdf/manual_instalacion.pdf) |
+| Documento | Archivo |
+|---|---|
+| Informe de PPS | [`Documentación/Informe_PPS_StudIA.pdf`](Documentaci%C3%B3n/Informe_PPS_StudIA.pdf) |
+| Diagrama de Gantt | [`Documentación/Diagrama_de_Gantt.xlsx`](Documentaci%C3%B3n/Diagrama_de_Gantt.xlsx) |
+| Manual de usuario | [`Manuales/Manual_de_Usuario.pdf`](Manuales/Manual_de_Usuario.pdf) |
 
 
 

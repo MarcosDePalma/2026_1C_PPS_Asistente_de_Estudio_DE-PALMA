@@ -1,4 +1,4 @@
-# Manual de instalación — StudIA
+# Guía de Instalación — StudIA
 
 **Versión:** 1.0 · **Fecha:** 18/09/2026
 **Proyecto:** StudIA — Asistente de estudio sobre corpus académico (PPS · FI-UNLZ)
@@ -17,11 +17,14 @@ desde el instalador** (para usar el sistema) y **compilación desde el código f
 |---|---|---|
 | Sistema operativo | Windows 10 64 bits | Windows 11 64 bits |
 | RAM | 8 GB | 16 GB |
-| Disco (aplicación + índice + modelo) | 3 GB | 5 GB |
-| Disco (corpus completo, opcional) | — | 8 GB |
+| Disco (aplicación + modelo de embeddings) | 2 GB | 3 GB |
+| Disco (índice `studia.db`) | 0,9 GB | 0,9 GB |
+| Disco (documentos `DATA_StudIA`, opcional) | — | 6 GB |
+| Disco (modelo de lenguaje, se descarga aparte) | 3 GB | 8 GB |
 | GPU | no requerida | NVIDIA con 6 GB+ de VRAM |
 
-Sin GPU el sistema funciona, pero el modelo de chat responde más lento.
+En total conviene tener unos **10 GB libres**. Sin GPU el sistema funciona, pero el
+modelo de chat responde más lento.
 
 ### 1.2 Dependencias externas
 
@@ -45,7 +48,7 @@ ofrece instalarlas con un clic. También se pueden instalar a mano (§3).
 
 ### 2.1 Instalar la aplicación
 
-1. Ejecutar **`StudIA-1.0-Setup.exe`** (≈ 1,21 GB).
+1. Ejecutar **`StudIA-1.0-Setup.exe`** (≈ 0,59 GB).
 2. Aceptar la carpeta de destino propuesta o elegir otra.
 3. Finalizar.
 
@@ -57,13 +60,14 @@ El instalador incluye:
 | Contenido | Ubicación tras instalar |
 |---|---|
 | Aplicación (LlamaCode + StudIA) | carpeta de instalación |
-| Índice del corpus (`studia.db`) | `<instalación>\StudIA\` |
 | Modelo de embeddings (bge-m3) | `<instalación>\StudIA\modelos\` |
-| Scripts de dependencias y de corpus | `<instalación>\StudIA\` |
+| Script de dependencias | `<instalación>\StudIA\` |
+| `Instrucciones de instalación.txt` | carpeta de instalación y menú de inicio |
 
-> **Por qué los documentos originales no vienen adentro:** son 7,7 GB y sólo hacen
-> falta para *abrir* el PDF desde una cita. El texto citado está dentro del índice, así
-> que el chat, las citas, la abstención y los modos funcionan sin ellos.
+> **El material de estudio no viene adentro.** Un `.exe` de Windows no puede superar los
+> 4,2 GB y el material los excede. Además el programa y el índice cambian a ritmos
+> distintos —el índice sólo cuando se reindexa—, así que actualizar uno no obliga a
+> rehacer el otro. Viaja aparte: ver §2.3.
 
 ### 2.2 Instalar las dependencias
 
@@ -83,42 +87,58 @@ Para ver qué falta sin instalar:
 .\instalar_dependencias.ps1 -SoloRevisar
 ```
 
-### 2.3 Copiar los documentos originales (opcional)
+### 2.3 Copiar el material de estudio
 
-Sólo hace falta si se quiere que las citas **abran el PDF**.
+El material viaja aparte del instalador, en una carpeta con dos cosas adentro:
 
-```
-<instalación>\StudIA\copiar_documentos.bat
-```
+| Contenido | Qué es | ¿Hace falta? |
+|---|---|---|
+| `studia.db` | El índice: el texto de todos los apuntes | Sí |
+| `DATA_StudIA` | Los PDF originales (5,93 GB) | Sólo para abrir el PDF desde una cita |
 
-o con destino propio:
+Copiar esa carpeta a donde se quiera —disco interno, externo o pendrive— **sin separar
+sus dos partes**. Esa es la única condición: al elegir el `studia.db` desde la
+aplicación (§2.4), de esa misma ruta sale también dónde están los documentos, porque se
+buscan en la carpeta `DATA_StudIA` hermana del índice.
 
-```powershell
-.\copiar_documentos.ps1 -Destino D:\Docs
-```
+No hay scripts de copiado, ni rutas fijas, ni una segunda ubicación que registrar.
 
-Copia el corpus (7,7 GB) desde el medio de entrega a **`C:\StudIA_Docs`** por defecto.
-
-> **Por qué un destino de ruta corta.** Las carpetas del material académico tienen
-> rutas de más de 260 caracteres, el límite que Windows admite. La copia se hace con
-> `robocopy`, que sí las maneja, pero el destino tiene que ser corto: dentro de la
-> carpeta de instalación se perdían 76 de 2.937 archivos; en `C:\StudIA_Docs`, 2.
-> Por el mismo límite el corpus **no puede** distribuirse dentro del instalador —un
-> `.exe` tampoco puede superar los 4,2 GB—.
+> Copiando sólo el `studia.db`, StudIA responde igual y sigue indicando de qué apunte y
+> qué página salió cada afirmación. Lo único que se pierde es que la cita abra el PDF.
 
 ### 2.4 Primera ejecución
 
 1. Abrir **StudIA** desde el menú de inicio.
-2. Ir a la sección **🎓 StudIA**.
-3. Elegir una materia y preguntar.
+
+2. **Descargar un modelo de lenguaje.** No viene con el instalador: son varios GB y
+   conviene elegir el que le sirva a cada placa. Desde la página de perfiles:
+
+   | Placa de video | Perfil |
+   |---|---|
+   | 8 GB | `[general] 8GB - Gemma 4 12B` (recomendado) |
+   | 4 GB | `[general] 4GB - Gemma 4 E4B` |
+   | 2 GB | `[general] 2GB - Gemma 4 E2B` |
+   | sin placa | `[general] 0GB CPU - Qwen3.5 4B` (lento) |
+
+3. **Arrancar el servidor y esperar.** Tarda unos 30 segundos en cargar el modelo. El
+   cuadro de texto se habilita antes de que termine: preguntar en ese rato devuelve
+   `[error: Connection refused]`. No está roto —hay que esperar y volver a preguntar—.
+
+4. Ir a la sección **🎓 StudIA**, apretar **Abrir índice** y elegir el `studia.db` de la
+   carpeta copiada en §2.3. Queda recordado: no hay que repetirlo.
+
+5. Elegir una materia y preguntar.
 
 El servidor de embeddings se levanta solo al abrir la aplicación y se cierra al salir.
-La primera respuesta demora más porque el modelo se está cargando.
 
 ### 2.5 Desinstalación
 
-Panel de control → *Aplicaciones* → **StudIA** → Desinstalar. Los documentos copiados a
-`C:\StudIA_Docs` no se eliminan: hay que borrarlos a mano si ya no se usan.
+Panel de control → *Aplicaciones* → **StudIA** → Desinstalar.
+
+Si el material quedó **dentro** de la carpeta del programa, el desinstalador borra el
+`studia.db` y `DATA_StudIA` para no dejar varios GB huérfanos que después nadie
+encuentra. Si se copió a otro lado —lo recomendado— no se toca: hay que borrarlo a mano
+si ya no se usa.
 
 ---
 
@@ -182,7 +202,7 @@ la máquina no tiene Python, las suites en Python se omiten y el resto igual cor
 ### 4.4 Preparar el índice
 
 La aplicación necesita un `studia.db`. Para generarlo a partir de un corpus propio, ver
-el **Manual del corpus e ingesta**:
+**Vectorizar_Nuevo_Corpus**:
 
 ```bash
 python tools/studia/ingest.py --corpus "D:\FACULTAD\DATA" --db "D:\StudIA\studia.db"
@@ -201,6 +221,9 @@ Genera `dist\StudIA-1.0-Setup.exe`. El script copia además el runtime de MSVC j
 ejecutable —sin eso la aplicación no abre en una PC sin Visual Studio— y actualiza los
 scripts empaquetados con la versión del repositorio.
 
+El instalador **no incluye el índice**: se arma sólo con la aplicación, el modelo de
+embeddings y las dependencias. El `studia.db` y `DATA_StudIA` se entregan aparte (§2.3).
+
 ---
 
 ## 5. Verificación de la instalación
@@ -212,7 +235,7 @@ scripts empaquetados con la versión del repositorio.
 | Una pregunta sobre un tema del material devuelve respuesta con citas | recuperación operativa |
 | Una pregunta ajena al material devuelve la respuesta de abstención | control de abstención operativo |
 | El aviso de herramientas no reporta faltantes | dependencias completas |
-| Un click en una cita abre el documento | el corpus está copiado |
+| Un click en una cita abre el documento | `DATA_StudIA` está junto al `studia.db` |
 
 ---
 
@@ -222,11 +245,13 @@ scripts empaquetados con la versión del repositorio.
 |---|---|---|
 | La aplicación no abre, error de DLL | Falta el runtime de MSVC | Instalarlo (§3) |
 | LlamaCode abre pero el servidor del modelo muere sin mensaje | Falta el runtime de Visual C++ para `llama-server.exe` | Ídem: el ejecutable vive en otra carpeta y no ve las copias locales |
-| El selector de materias aparece vacío | No se encuentra `studia.db` | Verificar `<instalación>\StudIA\studia.db` |
+| `[error: Connection refused]` al preguntar | El modelo todavía se está cargando | Esperar a que el servidor avise que está listo (~30 s) y volver a preguntar |
+| «Abrí un índice para empezar» | No se eligió el `studia.db` | Botón **Abrir índice** (§2.4) |
+| El selector de materias aparece vacío | No se encuentra el índice | Verificar que se haya abierto el `studia.db` correcto |
 | StudIA se abstiene siempre | El índice está vacío o es de otro corpus | Re-indexar y recalibrar el umbral |
-| Las citas no abren el documento | El corpus no fue copiado o está en otra ruta | Ejecutar `copiar_documentos.bat` |
+| Las citas no abren el documento | `DATA_StudIA` falta o quedó separada del `studia.db` | Ponerlas en la misma carpeta y volver a elegir el índice |
+| La búsqueda parece ignorar sinónimos | Falta el modelo de embeddings | Verificar `<instalación>\StudIA\modelos\` |
 | El botón 📎 no procesa | Falta Python | `instalar_dependencias.bat` |
-| Faltan archivos tras copiar el corpus | Ruta de destino demasiado larga | Usar un destino corto como `C:\StudIA_Docs` |
 
 ---
 

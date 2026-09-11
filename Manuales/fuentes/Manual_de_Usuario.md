@@ -1,4 +1,4 @@
-# Manual de usuario — StudIA
+# Manual de Usuario — StudIA
 
 **Versión:** 1.0 · **Fecha:** 18/09/2026
 **Proyecto:** StudIA — Asistente de estudio sobre corpus académico (PPS · FI-UNLZ)
@@ -94,8 +94,9 @@ aportó tres páginas se muestra una sola vez, como `apunte.pdf · pág. 11, 14,
 
 - Los números `[1]`, `[2]` dentro del texto corresponden a esa lista.
 - Un click en la cita abre el documento original.
-- Si el documento no se puede abrir —porque el corpus está en otra carpeta o se movió—
-  StudIA explica el motivo en lugar de no hacer nada.
+- Para que la cita abra el PDF, la carpeta `DATA_StudIA` tiene que estar **junto al
+  `studia.db`** que abriste. Si se separaron, StudIA explica el motivo en lugar de no
+  hacer nada.
 
 **Verificá siempre la cita antes de darle un uso importante a una respuesta.** Esa es
 la razón por la que las citas existen.
@@ -111,7 +112,7 @@ Si el material indexado no cubre la pregunta, StudIA lo dice. Ante esa respuesta
 | La pregunta es muy genérica (*«¿cuál es el mejor método?»*) | Reformulá con términos concretos de la materia. |
 | El tema existe pero preguntaste con otras palabras | Usá el vocabulario del apunte. Con la búsqueda semántica activa esto importa menos. |
 | El material no está en el índice | Sumalo con 📎 (§7) o pedí que se re-indexe el corpus. |
-| El apunte está escaneado sin texto | Necesita OCR: ver el *Manual del corpus*. |
+| El apunte está escaneado sin texto | Necesita OCR: ver el *Vectorizar_Nuevo_Corpus*. |
 
 ---
 
@@ -189,8 +190,8 @@ búsqueda por palabras.
 |---|---|---|
 | La barra de escritura está deshabilitada | No hay materia seleccionada | Elegí una materia. |
 | No responde nada | El servidor del modelo no está levantado | Levantalo desde LlamaCode. |
-| Responde siempre que no tiene información | El índice no está o apunta a otra ruta | Verificá la ubicación de `studia.db` (ver *Manual de instalación*). |
+| Responde siempre que no tiene información | No se abrió el índice, o es de otro corpus | Apretá **Abrir índice** y elegí el `studia.db` correcto (ver *Guía de Instalación*). |
 | El botón 📎 no hace nada | Falta Python | Ejecutá el instalador de dependencias que ofrece la aplicación. |
 | Los gráficos salen como texto | Falta matplotlib o mermaid-cli | Ídem. |
-| Las citas no abren el documento | El corpus está en otra carpeta | Copiá el material a la ruta esperada o re-indexá. |
-| Un apunte no aparece nunca | Está escaneado sin capa de texto | Necesita OCR: ver el *Manual del corpus*. |
+| Las citas no abren el documento | `DATA_StudIA` falta o quedó separada del `studia.db` | Poné las dos cosas en la misma carpeta y volvé a elegir el índice. |
+| Un apunte no aparece nunca | Está escaneado sin capa de texto | Necesita OCR: ver el *Vectorizar_Nuevo_Corpus*. |

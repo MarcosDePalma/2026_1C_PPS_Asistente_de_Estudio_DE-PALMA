@@ -22,4 +22,4 @@ de modo que se pueda regenerar o corregir sin rehacer la imagen a mano.
 El script [`../build_docs.py`](../Documentación/build_docs.py) los regenera a
 todos, junto a los manuales.
 
-
+Estos archivos fueron creados con inteligencia artificial, a partir del código de la app.

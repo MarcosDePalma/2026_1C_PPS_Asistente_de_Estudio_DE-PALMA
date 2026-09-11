@@ -10,13 +10,28 @@ pantalla y el video de demostración.
 | Archivo | Descripción |
 |---|---|
 | `01_studia_pantalla_principal.png` | Pantalla de StudIA con materia seleccionada y una respuesta con citas. |
-| `02_modos_tutor.png` | Barra de modos (Resumen, Explicación, Autoevaluación, Flashcards, Ejercicio, Plan de estudio). |
+| `02_00_conversacion.png` … `02_06_pde.png` | **Serie de 7 capturas: la barra de modos, una imagen por cada modo.** Ver el detalle más abajo. |
 | `03_citas_agrupadas.png` | Fuentes agrupadas por documento y clickeables. |
 | `04_grafico_funcion.png` | Respuesta con gráfico generado por el bloque ```grafico```. |
 | `05_diagrama_mermaid.png` | Respuesta con diagrama Mermaid renderizado. |
 | `06_flashcards_anki.png` | Exportación de flashcards al formato de Anki. |
 | `07_abstencion.png` | Respuesta de abstención ante una pregunta fuera del corpus. |
 | `logo_unlz.png` | Logo institucional. |
+
+#### Serie `02_*` — barra de modos
+
+En cada imagen hay un modo activo, resaltado con el color propio de ese modo.
+
+| Archivo | Modo activo |
+|---|---|
+| `02_00_conversacion.png` | Conversación |
+| `02_01_resumen.png` | Resumen |
+| `02_02_explicacion.png` | Explicación |
+| `02_03_autoevaluacion.png` | Autoevaluación |
+| `02_04_flashcards.png` | Flashcards |
+| `02_05_ejercitacion.png` | Ejercitación |
+| `02_06_pde.png` | Plan de estudio |
+
 
 ### Recorrido de uso (GIF)
 
@@ -34,7 +49,7 @@ pantalla y el video de demostración.
 - **Nombres:** `NN_descripcion_en_minusculas.ext`, numerados por orden de aparición
   en el informe, sin espacios ni tildes.
 
-- **Privacidad:** las capturas no deben mostrar nombres de terceros ni rutas con
+- **Privacidad:** Las capturas no deben mostrar nombres de terceros ni rutas con
   datos personales del corpus académico.
 
 ## Referencias

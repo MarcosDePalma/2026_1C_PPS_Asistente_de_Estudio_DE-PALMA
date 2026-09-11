@@ -1,4 +1,4 @@
-# Manual técnico — StudIA
+# Manual Técnico — StudIA
 
 **Versión:** 1.0 · **Fecha:** 18/09/2026
 **Destinatario:** quien tenga que mantener, corregir o extender el módulo.
@@ -109,9 +109,22 @@ verificados que conviene no volver a intentar:
 | Clave (`QSettings`) | Contenido |
 |---|---|
 | `studia/rutaIndice` | Ruta de `studia.db` |
-| `studia/carpetaDocumentos` | Raíz del corpus, para abrir los originales desde las citas |
+| `studia/carpetaDocumentos` | Raíz del corpus. Último recurso: hoy la carpeta se deduce del índice |
 | `studia/materia` | Última materia seleccionada |
 | `studia/urlEmbeddings` | URL del servidor de embeddings (vacío = sólo búsqueda léxica) |
+
+**Cómo se resuelve la carpeta de documentos.** `StudiaController::carpetaCorpus()`
+prueba candidatas de más específica a más general y gana la primera que exista:
+
+1. **`DATA_StudIA` hermana del índice abierto** (`carpetaJuntoAlIndice()`). Es la forma
+   recomendada de instalar: dejar `studia.db` y `DATA_StudIA` en la misma carpeta y
+   elegir el `.db` desde la aplicación resuelve las dos rutas de una vez.
+2. La `DATA_StudIA` empaquetada junto al ejecutable, si la hubiera.
+3. `studia/carpetaDocumentos`, la que se haya registrado a mano.
+4. La ruta que se usó al indexar.
+
+`carpetaJuntoAlIndice()` es estática y pura —sólo manipula texto, no toca disco— para
+poder cubrirla con tests.
 
 | Dato | Ubicación |
 |---|---|
@@ -130,7 +143,8 @@ del usuario.
 ### 5.1 Recalibrar el umbral de abstención
 
 **Obligatorio con cada corpus nuevo.** Los valores de BM25 dependen del tamaño del
-índice: un umbral calibrado para 139.000 fragmentos no sirve para otro corpus.
+índice: un umbral calibrado para un índice de cientos de miles de fragmentos no sirve
+para otro corpus.
 
 1. Armar un conjunto de preguntas en lenguaje natural, mitad cubiertas por el material
    y mitad ajenas (el original tenía 30: 16 y 14).
@@ -188,11 +202,13 @@ detectarlo.
 `installer\compilar.bat` arma con Inno Setup lo que se entrega; sale a `dist\`
 (ignorado por git).
 
-- **Aplicación** (`StudIA.iss`): un `.exe` de 1,21 GB con la app, `studia.db` y el
-  modelo de embeddings. Instala sin privilegios de administrador y registra la ruta en
-  `HKA\Software\StudIA\InstallDir`.
-- **Documentos** (`copiar_documentos.ps1`): 7,7 GB aparte, por `robocopy` a un destino
-  de ruta corta.
+- **Aplicación** (`StudIA.iss`): un `.exe` de 0,59 GB con la app, el modelo de
+  embeddings, las dependencias y el archivo de instrucciones. Instala sin privilegios de
+  administrador y registra la ruta en `HKA\Software\StudIA\InstallDir`.
+- **Material de estudio**: no va en el instalador. Se entrega aparte, en una carpeta con
+  `studia.db` y `DATA_StudIA` adentro, que el usuario copia donde quiera y elige desde la
+  aplicación. Un `.exe` no supera los 4,2 GB y el material los excede; además el programa
+  y el índice cambian a ritmos distintos.
 
 Dos cosas que hay que mantener y no son obvias:
 
@@ -201,6 +217,12 @@ Dos cosas que hay que mantener y no son obvias:
    carpeta y no alcanza esas copias: de ese se ocupa `instalar_dependencias.ps1`.
 2. `compilar.ps1` **copia los scripts del repositorio** a `build\Release\StudIA` antes
    de empaquetar, para no publicar la versión vieja de alguno que se haya tocado.
+3. `compilar.ps1` **avisa si falta el modelo de embeddings** en `StudIA\modelos`. No es
+   fatal —la búsqueda queda sólo por palabras— pero conviene enterarse antes de repartir
+   el paquete.
+4. El desinstalador borra `studia.db` y `DATA_StudIA` **sólo si quedaron dentro de la
+   carpeta del programa**. Si el usuario los puso en otro lado, no son suyos y no los
+   toca.
 
 ---
 
@@ -244,7 +266,6 @@ git merge-tree --write-tree main feature/studia | grep CONFLICT
 | Deuda | Detalle |
 |---|---|
 | Validación en VM limpia | Procedimiento escrito, ejecución pendiente (`installer/PROBAR_EN_PC_LIMPIA.md`) |
-| 154 documentos sin OCR | Identificados y registrados; falta procesarlos y re-vectorizar |
 | Backends con SSE real sin cobertura | Limitación heredada del proyecto base: los tests cubren sesiones y persistencia, no la red |
 | Umbral atado al corpus | No hay recalibración automática al cambiar de corpus |
 | Sólo Windows | La versión empaquetada; el core no tiene dependencias específicas de plataforma más allá del build |

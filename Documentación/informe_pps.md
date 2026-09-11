@@ -1,6 +1,6 @@
 <!-- portada -->
 
-![Logo institucional](../MULTIMEDIA/logo_unlz.png)
+![Logo institucional](../Multimedia/logo_unlz.png)
 
 # StudIA — Asistente de estudio sobre corpus académico
 
@@ -37,7 +37,7 @@ El trabajo se implementó como módulo del proyecto institucional
 [UNLZ_Llamacode](https://github.com/cristianlukas/UNLZ_Llamacode), una estación de
 trabajo de IA local desarrollada en la Facultad. El aporte de esta PPS son **55
 archivos y aproximadamente 14.700 líneas** agregadas en 7 iteraciones, sobre un
-corpus real de **2.690 documentos** (~139.000 fragmentos indexados), con **322 casos
+corpus real de **2.505 documentos** (146.645 fragmentos indexados), con **322 casos
 de prueba automatizados** y un instalador que permite desplegar el sistema completo
 en una PC sin herramientas de desarrollo.
 
@@ -75,8 +75,8 @@ por el material y se abstiene en las 14 ajenas.
 
 Un estudiante de ingeniería acumula, a lo largo de la carrera, cientos de archivos de
 material de estudio: apuntes de cátedra, libros, guías de trabajos prácticos,
-presentaciones y resoluciones. En este caso concreto, ese material suma **2.690
-documentos y 23 GB** distribuidos en carpetas por materia.
+presentaciones y resoluciones. En este caso concreto, ese material suma **23 GB**
+distribuidos en carpetas por materia.
 
 Ese volumen es a la vez el activo más valioso del estudiante y su mayor problema
 práctico: **la información existe, pero encontrarla cuesta**. El buscador del sistema
@@ -321,8 +321,8 @@ con **bge-m3**, servidor de embeddings en un puerto propio (8081) ejecutándose 
 para dejar la GPU al modelo de chat, y fusión RRF con el ranking léxico.
 
 En la misma iteración se cerró el **prompt de abstención** y se agregó una clasificación
-de preguntas para mejorar el contexto recuperado. Quedaron identificados 154 documentos
-descartados por formato incompatible.
+de preguntas para mejorar el contexto recuperado. Quedaron identificados los documentos
+escaneados sin capa de texto, que se procesaron después con OCR (§7.3).
 
 ### 4.5 Multiconversación por materia y ajustes de interfaz — `0b1779d` (07/08/2026, 14 archivos, +1.573)
 
@@ -346,12 +346,13 @@ sistema se ignora, y pedir una estructura global ("primero las 10 preguntas, des
 
 La última iteración convierte el desarrollo en algo **instalable por otra persona**:
 
-- **Instalador único** de 1,21 GB (Inno Setup) con la aplicación, el índice y el modelo
-  de embeddings. No requiere privilegios de administrador.
+- **Instalador único** (Inno Setup) con la aplicación y el modelo de embeddings. No
+  requiere privilegios de administrador. El índice y los documentos se entregan aparte
+  (§6.7).
 - **Arranque autónomo** del servidor de embeddings al abrir la aplicación y cierre al
   salir: la búsqueda semántica queda activa sin intervención del usuario.
-- **Reducción del corpus** de 23 GB a 7,7 GB, descartando lo que no alimenta el índice,
-  y distribución aparte por `robocopy` (§6.7).
+- **Reducción del corpus** de 23 GB a 5,93 GB, descartando lo que no alimenta el
+  índice, y distribución aparte del instalador (§6.7).
 - **Autodiagnóstico de dependencias** (`StudiaHerramientas`): la aplicación informa qué
   falta, **qué función se pierde** por eso y ofrece instalarlo con un clic. Antes, las
   funciones sin dependencia se apagaban en silencio y el estudiante no tenía cómo
@@ -366,7 +367,7 @@ La última iteración convierte el desarrollo en algo **instalable por otra pers
 
 ### 5.1 Vista general
 
-![Diagrama de bloques](../PLANOS/diagrama_bloques.png)
+![Diagrama de bloques](../Diagramas/diagrama_bloques.png)
 
 Tres bloques con acoplamiento mínimo:
 
@@ -383,7 +384,7 @@ puerto, que StudIA sí levanta y supervisa.
 
 ### 5.2 Módulos del core
 
-![Módulos](../PLANOS/modulos_studia.png)
+![Módulos](../Diagramas/modulos_studia.png)
 
 | Clase | Responsabilidad |
 |---|---|
@@ -398,7 +399,7 @@ puerto, que StudIA sí levanta y supervisa.
 
 ### 5.3 Flujo de una consulta
 
-![Flujo de consulta](../PLANOS/flujo_consulta.png)
+![Flujo de consulta](../Diagramas/flujo_consulta.png)
 
 El punto a destacar es el **rombo de decisión**: si la recuperación no encuentra
 evidencia suficiente, el flujo termina en la respuesta de abstención y **no llega al
@@ -406,7 +407,7 @@ modelo**. Es una garantía estructural, no una instrucción que el modelo pueda 
 
 ### 5.4 Pipeline de ingesta
 
-![Pipeline de ingesta](../PLANOS/pipeline_ingesta.png)
+![Pipeline de ingesta](../Diagramas/pipeline_ingesta.png)
 
 Recorre la carpeta de material, extrae el texto de cada formato, lo parte en fragmentos
 de ~1.200 caracteres con solape y arma el índice FTS5. Cuatro propiedades que se
@@ -472,7 +473,8 @@ los puntajes de dos índices distintos no son comparables.
 
 Por la misma razón el índice propio corre **sin exigir evidencia**: en un índice de tres
 fragmentos, todos los términos aparecen en todos y el score se anula, de modo que el
-umbral calibrado para 139.000 fragmentos dejaría afuera absolutamente todo lo adjuntado.
+umbral calibrado para un índice de cientos de miles de fragmentos dejaría afuera
+absolutamente todo lo adjuntado.
 La garantía anti-invención no se pierde: la aporta el índice de cátedra, que sí mantiene
 el control.
 
@@ -520,11 +522,22 @@ máquina del estudiante sería una vulnerabilidad, no una función.
 
 ### 6.7 Distribución del corpus
 
-El corpus no puede ir dentro del instalador por dos límites de Windows: un ejecutable no
-supera los 4,2 GB y las rutas del material superan los 260 caracteres. Se distribuye
-aparte con `robocopy` —que sí maneja rutas largas— a un destino de ruta corta
-(`C:\StudIA_Docs`). La medición fue concluyente: dentro de la carpeta de instalación se
-perdían 76 de 2.937 archivos; fuera, 2.
+El corpus no puede ir dentro del instalador: un ejecutable de Windows no supera los
+4,2 GB y el material los excede. Se distribuye aparte, en una carpeta con las dos piezas
+que tienen que viajar juntas: el índice `studia.db` y los documentos originales en
+`DATA_StudIA`.
+
+El estudiante copia esa carpeta donde quiera —disco interno, externo o pendrive— y elige
+el `.db` desde la aplicación. De esa misma ruta sale también dónde están los documentos,
+porque la carpeta de documentos se busca como hermana del índice abierto. No hay scripts
+de copiado, ni rutas fijas, ni una segunda ubicación que registrar: la única condición es
+no separar el índice de los documentos.
+
+La separación además desacopla dos cosas con ritmos distintos: el programa cambia con
+cada versión y el índice sólo cuando se reindexa, de modo que actualizar uno no obliga a
+rehacer el otro. Copiar únicamente el `studia.db` también funciona —las respuestas
+siguen indicando de qué apunte y qué página salió cada afirmación—; lo único que se
+pierde es abrir el PDF original desde la cita.
 
 ---
 
@@ -548,7 +561,8 @@ saltean solas. **Build más suite en verde fue la condición para cada commit.**
 
 Se construyó un conjunto de **30 preguntas escritas en lenguaje natural** —16 cubiertas
 por el material y 14 ajenas al corpus— y se ajustó el umbral contra el corpus real de
-2.690 documentos y ~139.000 fragmentos.
+la cátedra, que al momento de la calibración tenía 2.690 documentos y ~139.000
+fragmentos.
 
 | Métrica | Resultado |
 |---|---|
@@ -564,12 +578,19 @@ entre índices de distinto tamaño.
 
 | Magnitud | Valor |
 |---|---:|
-| Documentos indexados | 2.690 |
-| Fragmentos en el índice | ~139.000 |
+| Documentos indexados | 2.505 |
+| Fragmentos en el índice | 146.645 |
+| Fragmentos vectorizados | 146.645 (100 %) |
+| Tamaño del índice `studia.db` | 0,87 GB |
 | Tamaño del corpus original | 23 GB |
-| Corpus reducido para distribución | 7,7 GB (2.937 archivos) |
-| Documentos descartados por formato incompatible | 154 |
+| Corpus distribuido junto al índice | 5,93 GB (2.505 archivos) |
 | Formatos soportados | PDF, DOCX, PPTX, XLSX, TXT, MD, IPYNB |
+
+El índice se regeneró el 08/09/2026 para dejar afuera material con datos de terceros y
+se le aplicó OCR a los documentos escaneados. Es la versión definitiva: los 2.505
+documentos quedaron en estado `ok`, **ninguno sin texto extraído**, y los 146.645
+fragmentos tienen su vector correspondiente (bge-m3, 1024 dimensiones). Las cifras de la
+tabla son las de esa versión, que es la que se entrega.
 
 ### 7.4 Pruebas de instalación
 
@@ -587,15 +608,15 @@ requieren Windows 11 Pro y el equipo de trabajo tiene la edición Home.
 
 | # | Objetivo específico | Estado | Evidencia |
 |---:|---|---|---|
-| 1 | Índice del corpus con recuperación en lenguaje natural | ✅ Cumplido | 2.690 documentos indexados; recuperación híbrida |
+| 1 | Índice del corpus con recuperación en lenguaje natural | ✅ Cumplido | 2.505 documentos indexados; recuperación híbrida |
 | 2 | Abstención ante material insuficiente | ✅ Cumplido | 30/30 en el conjunto de calibración |
 | 3 | Modos de estudio | ✅ Cumplido | 7 modos con consigna y formato propios |
 | 4 | Citas verificables | ✅ Cumplido | citas agrupadas por documento, abren el original |
 | 5 | Bibliografía propia sin contaminar el índice | ✅ Cumplido | índice separado con cupo propio |
-| 6 | Empaquetado para PC sin herramientas de desarrollo | ✅ Cumplido | instalador de 1,21 GB sin privilegios de administrador |
+| 6 | Empaquetado para PC sin herramientas de desarrollo | ✅ Cumplido | instalador de 0,59 GB sin privilegios de administrador |
 | 7 | Integración sin modificar el proyecto base | ✅ Cumplido | 5 archivos existentes tocados sobre 55 |
 | — | Validación en máquina virtual limpia | 🔄 Pendiente | procedimiento documentado, ejecución pendiente |
-| — | OCR del remanente de escaneados | 🔄 Parcial | 154 documentos identificados |
+| — | OCR del remanente de escaneados | ✅ Cumplido | ningún documento del índice quedó sin texto |
 
 ---
 
@@ -608,9 +629,9 @@ PDF escaneados sin texto. Buena parte del ingestor no es extracción de texto si
 quedó afuera y por qué.
 
 **Los límites del sistema operativo aparecen tarde y son duros.** El tope de 4,2 GB para
-un ejecutable y el de 260 caracteres para las rutas no se negocian: obligaron a rediseñar
-la distribución cuando el desarrollo ya estaba terminado. La lección es que el empaquetado
-merece pensarse antes y no como último paso.
+un ejecutable no se negocia: obligó a rediseñar la distribución cuando el desarrollo ya
+estaba terminado, dejando el material fuera del instalador. La lección es que el
+empaquetado merece pensarse antes y no como último paso.
 
 **Un test que pasa no significa que el modelo obedezca.** Verificar que una instrucción
 está en el prompt es fácil; verificar que el modelo la cumple exige ejercitar el sistema
@@ -636,7 +657,7 @@ defectos heredados del aporte propio es lo que hace que un desarrollo pueda inte
 ## 9. Conclusiones
 
 Se cumplieron los siete objetivos específicos planteados. El sistema resultante responde
-preguntas sobre 2.690 documentos académicos citando el documento y la página, ofrece
+preguntas sobre 2.505 documentos académicos citando el documento y la página, ofrece
 siete modos de estudio, se instala en una PC sin herramientas de desarrollo y funciona
 **sin conexión y sin enviar material a terceros**.
 
@@ -658,7 +679,6 @@ del ciclo —que no es "funciona en mi máquina" sino "otra persona lo instala y
 | Línea | Descripción |
 |---|---|
 | Validación en VM limpia | Ejecutar el procedimiento documentado en VirtualBox y corregir lo que aparezca. |
-| OCR del remanente | Procesar los 154 documentos escaneados y re-vectorizar el índice. |
 | Prueba con usuarios | Uso por estudiantes de la carrera, con medición de utilidad y de tasa de abstención sobre preguntas reales. |
 | Integración con el proyecto base | Llevar el módulo a la versión actual de `main`: el proyecto original avanzó 583 commits desde el fork y el merge deja hoy 7 archivos en conflicto, todos ellos los que StudIA tuvo que tocar. Estimado: 12 h más recompilación y suite completa. |
 | Portabilidad del corpus | Herramienta para que otro estudiante indexe su propio material y recalibre el umbral automáticamente. |
