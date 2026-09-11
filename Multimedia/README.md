@@ -16,7 +16,8 @@ pantalla y el video de demostración.
 | `05_diagrama_mermaid.png` | Respuesta con diagrama Mermaid renderizado. |
 | `06_flashcards_anki.png` | Exportación de flashcards al formato de Anki. |
 | `07_abstencion.png` | Respuesta de abstención ante una pregunta fuera del corpus. |
-| `logo_unlz.png` | Logo institucional. |
+| `logo_unlz.png` | Logo institucional de la Facultad de Ingeniería (UNLZ). |
+| `app_icon.png` | Icono de la aplicación UNLZ_Llamacode, el proyecto base. Lleva relleno transparente arriba y abajo para alinear con `logo_unlz.png` en el encabezado del README. |
 
 #### Serie `02_*` — barra de modos
 

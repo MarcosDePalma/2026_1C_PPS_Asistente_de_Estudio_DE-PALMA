@@ -1,5 +1,6 @@
 <p align="center">
-  <img src="Multimedia/logo_unlz.png" alt="Universidad Nacional de Lomas de Zamora — Facultad de Ingeniería" width="480">
+  <img src="Multimedia/logo_unlz.png" alt="Universidad Nacional de Lomas de Zamora — Facultad de Ingeniería" width="70%">
+  <img src="Multimedia/app_icon.png" alt="UNLZ_Llamacode" width="22%">
 </p>
 
 # StudIA — Asistente de estudio con corpus académico
