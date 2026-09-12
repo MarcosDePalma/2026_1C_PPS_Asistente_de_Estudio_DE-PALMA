@@ -15,8 +15,8 @@ Documentación formal de la PPS: el informe y el Diagrama de Gantt.
 
 | Documento | Archivo | Descripción |
 |---|---|---|
-| **Plan de estudios** | [`Plan_2022_ingenieria_mecatronica.pdf`](Anexos/Plan_2022_ingenieria_mecatronica.pdf) | Plan de la carrera de Ingeniería Mecatrónica (FI-UNLZ). |
-| **Correlatividades** | [`Plan 2024 CORRELATIVAS MECATRONICA.pdf`](Anexos/Plan%202024%20CORRELATIVAS%20MECATRONICA.pdf) | Cuadro de correlativas de la carrera. |
+| **Plan de estudios** | [`Plan_de_Estudio_2022_Ing_Mecatronica.pdf`](Anexos/Plan_de_Estudio_2022_Ing_Mecatronica.pdf) | Plan de la carrera de Ingeniería Mecatrónica (FI-UNLZ). |
+| **Correlatividades** | [`Correlativas_2024_Ing_Mecatronica.pdf`](Anexos/Correlativas_2024_Ing_Mecatronica.pdf) | Cuadro de correlativas de la carrera. |
 
 ---
 
